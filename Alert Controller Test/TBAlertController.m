@@ -151,7 +151,8 @@
 
 - (void)setDestructiveButtonIndex:(NSInteger)destructiveButtonIndex
 {
-    NSAssert(self.style == TBAlertControllerStyleActionSheet, @"Only action sheets can have destructive buttons.");
+    if (![UIAlertController class])
+        NSAssert(self.style == TBAlertControllerStyleActionSheet, @"Only action sheets can have destructive buttons on iOS 7.");
     
     _destructiveButtonIndex = destructiveButtonIndex;
 }

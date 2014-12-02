@@ -1,7 +1,7 @@
 TBAlertController
 =================
 
-UIAlertController, UIAlertView, and UIActionSheet unified for develoeprs who want to support iOS 7 and 8.
+UIAlertController, UIAlertView, and UIActionSheet unified for developers who want to support iOS 7 and 8.
 
 Installation:
 =============

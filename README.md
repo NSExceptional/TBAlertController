@@ -5,7 +5,7 @@ UIAlertController, UIAlertView, and UIActionSheet unified for developers who wan
 
 Installation:
 =============
-Add `TBAlertController.h` and `TBAlertController.m` to your project and mport `TBAlertController.h`. Cocoapods support coming soon!
+Add `TBAlertController.h` and `TBAlertController.m` to your project and import `TBAlertController.h`. Cocoapods support coming soon!
 
 About:
 =============

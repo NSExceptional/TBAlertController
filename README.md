@@ -29,5 +29,11 @@ The target-selector style actions also support passing a single parameter, like 
             [alert addOtherButtonWithTitle:@"Dismiss"];
             [alert addOtherButtonWithTitle:@"Say hi" target:self action:@selector(say:) withObject:@"hi"];
 
+The following will throw exceptions:
+- calling `show` when using the action sheet style (to stay consistent with iOS 7's implementations)
+- calling `showInView:` for the same reason as above
+- setting the destructive button index when using the alert view style on iOS 7 (since iOS 7 doesn't support this)
+- passing `nil` for any of the folliwing: title, target, action, or a block for `tappedBlock:`. You may pass `nil` to the `object` parameter of `addOtherButtonWithTitle:target:action:withObject:`, as it will call just call the parent method which takes no `object` parameter.
+
 TODO
 - Add support for alert views with text boxes.

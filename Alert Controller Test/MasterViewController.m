@@ -77,33 +77,33 @@
             alert.title = @"Alert";
             alert.message = @"show\n1 button";
             [alert addOtherButtonWithTitle:@"OK"];
-            [alert show];
+            [alert showFromViewController:self];
             break;
             // 1 normal, cancel
         case 2:
             alert = [[TBAlertController alloc] initWithStyle:style];
             alert.title = @"Alert";
-            alert.message = @"showInView:\n2 1 normal, cancel";
+            alert.message = @"1 normal, cancel";
             [alert addOtherButtonWithTitle:@"OK"];
             [alert setCancelButtonWithTitle:@"Canc3l"];
-            [alert showInView:[self.view window]];
+            [alert showFromViewController:self];
             break;
             // 1 normal, cancel with block
         case 3:
             alert = [[TBAlertController alloc] initWithStyle:style];
             alert.title = @"Alert";
-            alert.message = @"showFromViewController:\n2 1 normal, cancel with block";
+            alert.message = @"1 normal, cancel with block";
             [alert addOtherButtonWithTitle:@"OK"];
-            [alert setCancelButtonWithTitle:@"Canc3l" onTapped:^{
+            [alert setCancelButtonWithTitle:@"Canc3l" buttonAction:^{
                 NSLog(@"cancel tapped, cell 3");
             }];
             [alert showFromViewController:self];
             break;
-            // 2 1 normal, cancel with target
+            // 1 normal, cancel with target
         case 4:
             alert = [[TBAlertController alloc] initWithStyle:style];
             alert.title = @"Alert";
-            alert.message = @"showFromViewController:animated:completion:(nil)\n2 1 normal, cancel with target";
+            alert.message = @"1 normal, cancel with target";
             [alert addOtherButtonWithTitle:@"OK"];
             [alert setCancelButtonWithTitle:@"Canc3l" target:self action:@selector(targetedAction)];
             [alert showFromViewController:self animated:YES completion:nil];
@@ -112,32 +112,32 @@
         case 5:
             alert = [[TBAlertController alloc] initWithStyle:style];
             alert.title = @"Alert";
-            alert.message = @"showFromViewController:animated:completion:(NSLOG)\n2 1 normal, cancel with target and object";
+            alert.message = @"1 normal, cancel with target and object";
             [alert addOtherButtonWithTitle:@"OK"];
             [alert setCancelButtonWithTitle:@"Canc3l" target:self action:@selector(targetedActionWithObject:) withObject:@"[ object, success ]"];
             [alert showFromViewController:self animated:YES completion:^{NSLog(@"completion");}];
             break;
-            // 1 button, 1 normal with target
+            // 1 normal with target
         case 6:
             alert = [[TBAlertController alloc] initWithStyle:style];
             alert.title = @"Alert";
-            alert.message = @"showFromViewController\n1 button, 1 normal with target";
+            alert.message = @"1 normal with target";
             [alert addOtherButtonWithTitle:@"OK" target:self action:@selector(targetedAction)];
             [alert showFromViewController:self];
             break;
-            // 1 button, 1 normal with target and object
+            // 1 normal with target and object
         case 7:
             alert = [[TBAlertController alloc] initWithStyle:style];
             alert.title = @"Alert";
-            alert.message = @"showFromViewController\n1 button, 1 normal with target and object";
+            alert.message = @"1 normal with target and object";
             [alert addOtherButtonWithTitle:@"OK" target:self action:@selector(targetedActionWithObject:) withObject:@"[ object, success ]"];
             [alert showFromViewController:self];
             break;
-            // 1 button, destructive button: 1
+            // destructive button: 1
         case 8:
             alert = [[TBAlertController alloc] initWithStyle:style];
             alert.title = @"Alert";
-            alert.message = @"showFromViewController\n destructive button: 1";
+            alert.message = @"destructive button: 1";
             [alert addOtherButtonWithTitle:@"OK"];
             [alert addOtherButtonWithTitle:@"Destructive"];
             [alert addOtherButtonWithTitle:@"OK"];

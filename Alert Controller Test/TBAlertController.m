@@ -8,16 +8,26 @@
 
 #import "TBAlertController.h"
 
+#if ! __has_feature(objc_arc)
+#error This file requires ARC! Add "-fobjc-arc" in Build Phases -> Compile Sources -> Compiler Flags.
+#endif
+
 #pragma mark - TBAlertView - DO NOT USE
 #pragma mark Created to use itself as the delegate for iOS 7 and earlier.
 
+
+@protocol TBAlert <NSObject>
+
+- (void)didDismissWithButtonIndex:(NSInteger)buttonIndex;
+
+@end
 // AlertView
 @interface TBAlertView : UIAlertView <UIAlertViewDelegate>
-@property (nonatomic) TBAlertController *controller;
-- (instancetype)initWithTitle:(NSString *)title message:(NSString *)message controller:(TBAlertController *)controller;
+@property (nonatomic) id<TBAlert> controller;
+- (instancetype)initWithTitle:(NSString *)title message:(NSString *)message controller:(id<TBAlert>)controller;
 @end
 @implementation TBAlertView
-- (instancetype)initWithTitle:(NSString *)title message:(NSString *)message controller:(TBAlertController *)controller
+- (instancetype)initWithTitle:(NSString *)title message:(NSString *)message controller:(id<TBAlert>)controller
 {
     self = [super init];
     if (self) {
@@ -40,11 +50,11 @@
 
 // ActionSheet
 @interface TBActionSheet : UIActionSheet <UIActionSheetDelegate>
-@property (nonatomic) TBAlertController *controller;
-- (instancetype)initWithTitle:(NSString *)title message:(NSString *)message controller:(TBAlertController *)controller;
+@property (nonatomic) id<TBAlert> controller;
+- (instancetype)initWithTitle:(NSString *)title message:(NSString *)message controller:(id<TBAlert>)controller;
 @end
 @implementation TBActionSheet
-- (instancetype)initWithTitle:(NSString *)title message:(NSString *)message controller:(TBAlertController *)controller
+- (instancetype)initWithTitle:(NSString *)title message:(NSString *)message controller:(id<TBAlert>)controller
 {
     self = [super init];
     if (self) {
@@ -66,9 +76,9 @@
 
 #pragma mark - TBAlertController
 
-@interface TBAlertController ()
+@interface TBAlertController () <TBAlert>
 
-@property (nonatomic      ) NSString          *cancelButtonTitle;
+@property (nonatomic, copy) NSString          *cancelButtonTitle;
 @property (nonatomic, copy) void              (^cancelButtonBlock)();
 @property (nonatomic      ) id                cancelButtonTarget;
 @property (nonatomic      ) SEL               cancelButtonAction;
@@ -80,19 +90,19 @@
 
 @implementation TBAlertController
 
-- (id)initWithStyle:(TBAlertControllerStyle)style
+- (instancetype)initWithStyle:(TBAlertControllerStyle)style
 {
     self = [super init];
     if (self) {
         _buttons = [NSMutableArray new];
         _style = style;
-        _destructiveButtonIndex = -1;
+        _destructiveButtonIndex = NSNotFound;
     }
     
     return self;
 }
 
-- (id)initWithTitle:(NSString *)title message:(NSString *)message style:(TBAlertControllerStyle)style
+- (instancetype)initWithTitle:(NSString *)title message:(NSString *)message style:(TBAlertControllerStyle)style
 {
     self = [self initWithStyle:style];
     if (self) {
@@ -130,12 +140,12 @@
     self.cancelButtonObject = object;
 }
 
-- (void)setCancelButtonWithTitle:(NSString *)title onTapped:(void(^)())tappedBlock
+- (void)setCancelButtonWithTitle:(NSString *)title buttonAction:(void(^)())buttonBlock
 {
     [self clearCancelButtonData];
 
     self.cancelButtonTitle  = title;
-    self.cancelButtonBlock  = [tappedBlock copy];
+    self.cancelButtonBlock  = [buttonBlock copy];
 }
 
 - (void)clearCancelButtonData
@@ -189,11 +199,11 @@
     [self.buttons addObject:button];
 }
 
-- (void)addOtherButtonWithTitle:(NSString *)title onTapped:(void(^)())tappedBlock
+- (void)addOtherButtonWithTitle:(NSString *)title buttonAction:(void(^)())buttonBlock
 {
-    NSParameterAssert(title); NSParameterAssert(tappedBlock);
+    NSParameterAssert(title); NSParameterAssert(buttonBlock);
     
-    NSDictionary *button = @{@"title" : title, @"block" : tappedBlock};
+    NSDictionary *button = @{@"title" : title, @"block" : buttonBlock};
     [self.buttons addObject:button];
 }
 

@@ -141,7 +141,10 @@
             [alert addOtherButtonWithTitle:@"OK"];
             [alert addOtherButtonWithTitle:@"Destructive"];
             [alert addOtherButtonWithTitle:@"OK"];
+            [alert addOtherButtonWithTitle:@"Removed"];
+            [alert removeButtonAtIndex:[alert numberOfButtons]-1];
             alert.destructiveButtonIndex = 1;
+            [alert setButtonEnabled:NO atIndex:[alert numberOfButtons]-1];
             [alert showFromViewController:self];
         default:
             break;

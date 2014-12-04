@@ -14,8 +14,9 @@
 {
     self = [super init];
     if (self) {
-        _title = title;
-        _style = TBAlertActionStyleNoAction;
+        _title   = title;
+        _enabled = YES;
+        _style   = TBAlertActionStyleNoAction;
     }
     
     return self;

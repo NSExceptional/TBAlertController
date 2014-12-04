@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Tanner. All rights reserved.
 //
 
+#import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 
 typedef NS_ENUM(NSInteger, TBAlertActionStyle) {
@@ -23,6 +24,7 @@ typedef NS_ENUM(NSInteger, TBAlertActionStyle) {
 - (instancetype)initWithTitle:(NSString *)title target:(id)target action:(SEL)action object:(id)object;
 
 @property (nonatomic, readonly      ) TBAlertActionStyle style;
+@property (nonatomic                ) BOOL               enabled; // Only applies to iOS 8
 @property (nonatomic, readonly, copy) NSString           *title;
 @property (nonatomic, readonly, copy) void               (^block)();
 @property (nonatomic, readonly      ) id                 target;

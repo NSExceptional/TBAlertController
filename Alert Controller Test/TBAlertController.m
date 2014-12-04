@@ -43,6 +43,7 @@
 {
     [self.controller didDismissWithButtonIndex:buttonIndex];
 }
+
 @end
 
 #pragma mark - TBAlertView - DO NOT USE
@@ -109,7 +110,20 @@
     return self;
 }
 
+- (NSUInteger)numberOfButtons
+{
+    if (self.cancelAction)
+        return [self.buttons count] + 1;
+    
+    return [self.buttons count];
+}
+
 #pragma mark Cancel button
+
+- (void)setCancelButton:(TBAlertAction *)button
+{
+    self.cancelAction = button;
+}
 
 - (void)setCancelButtonWithTitle:(NSString *)title
 {
@@ -131,6 +145,17 @@
     self.cancelAction = [[TBAlertAction alloc] initWithTitle:title target:target action:action object:object];
 }
 
+- (void)setCancelButtonEnabled:(BOOL)enabled
+{
+    NSAssert(self.cancelAction, @"Cancel button was never set, cannot enable or disable it.");
+    self.cancelAction.enabled = enabled;
+}
+
+- (void)removeCancelButton
+{
+    self.cancelAction = nil;
+}
+
 #pragma mark Destructive button
 
 - (void)setDestructiveButtonIndex:(NSInteger)destructiveButtonIndex
@@ -142,6 +167,11 @@
 }
 
 #pragma mark Other buttons
+
+- (void)addOtherButton:(TBAlertAction *)button
+{
+    [self.buttons addObject:button];
+}
 
 - (void)addOtherButtonWithTitle:(NSString *)title
 {
@@ -180,6 +210,23 @@
     
     TBAlertAction *button = [[TBAlertAction alloc] initWithTitle:title block:buttonBlock];
     [self.buttons addObject:button];
+}
+
+- (void)setButtonEnabled:(BOOL)enabled atIndex:(NSUInteger)buttonIndex
+{
+    // Cancel button
+    if (buttonIndex == [self.buttons count])
+    {
+        NSAssert(self.cancelAction, @"Invalid button index; out of bounds.");
+        self.cancelAction.enabled = enabled;
+    }
+    else
+        [self.buttons[buttonIndex] setEnabled:enabled];
+}
+
+- (void)removeButtonAtIndex:(NSUInteger)buttonIndex
+{
+    [self.buttons removeObjectAtIndex:buttonIndex];
 }
 
 #pragma mark Displaying (iOS 8)
@@ -237,18 +284,19 @@
 
 - (UIAlertAction *)actionFromAlertAction:(TBAlertAction *)button withStyle:(UIAlertActionStyle)style
 {
+    UIAlertAction *action;
+    
     switch (button.style) {
         case TBAlertActionStyleNoAction:
         case TBAlertActionStyleBlock:
         {
-            return [UIAlertAction actionWithTitle:button.title style:style handler:button.block];
+            action = [UIAlertAction actionWithTitle:button.title style:style handler:button.block];
         }
             break;
             
         case TBAlertActionStyleTargetObject:
         case TBAlertActionStyleTarget:
         {
-            UIAlertAction *action;
             
             // With object
             if (button.object)
@@ -264,9 +312,12 @@
                                                      target:button.target
                                                    selector:button.action];
             
-            return action;
         }
+            break;
     }
+    
+    action.enabled = button.enabled;
+    return action;
 }
 
 #pragma mark Displaying (iOS 7)

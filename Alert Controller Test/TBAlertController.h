@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
+#import "TBAlertAction.h"
 
 typedef void (^TBAlertControllerBlock)();
 
@@ -35,16 +36,16 @@ typedef NS_ENUM(NSInteger, TBAlertControllerStyle) {
 #pragma mark Cancel button
 
 - (void)setCancelButtonWithTitle:(NSString *)title;
+- (void)setCancelButtonWithTitle:(NSString *)title buttonAction:(void(^)())buttonBlock;
 - (void)setCancelButtonWithTitle:(NSString *)title target:(id)target action:(SEL)action;
 - (void)setCancelButtonWithTitle:(NSString *)title target:(id)target action:(SEL)action withObject:(id)object;
-- (void)setCancelButtonWithTitle:(NSString *)title buttonAction:(void(^)())buttonBlock;
 
 #pragma mark Adding othe buttons
 
 - (void)addOtherButtonWithTitle:(NSString *)title;
+- (void)addOtherButtonWithTitle:(NSString *)title buttonAction:(void(^)())buttonBlock;
 - (void)addOtherButtonWithTitle:(NSString *)title target:(id)target action:(SEL)action;
 - (void)addOtherButtonWithTitle:(NSString *)title target:(id)target action:(SEL)action withObject:(id)object;
-- (void)addOtherButtonWithTitle:(NSString *)title buttonAction:(void(^)())buttonBlock;
 
 #pragma mark Displaying alert
 

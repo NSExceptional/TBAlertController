@@ -78,12 +78,8 @@
 
 @interface TBAlertController () <TBAlert>
 
-@property (nonatomic, copy) NSString          *cancelButtonTitle;
-@property (nonatomic, copy) void              (^cancelButtonBlock)();
-@property (nonatomic      ) id                cancelButtonTarget;
-@property (nonatomic      ) SEL               cancelButtonAction;
-@property (nonatomic      ) id                cancelButtonObject;
-@property (nonatomic)       NSMutableArray    *buttons;
+@property (nonatomic      ) TBAlertAction     *cancelAction;
+@property (nonatomic      ) NSMutableArray    *buttons;
 @property (nonatomic, copy) void              (^completion)();
 
 @end
@@ -94,8 +90,8 @@
 {
     self = [super init];
     if (self) {
-        _buttons = [NSMutableArray new];
         _style = style;
+        _buttons = [NSMutableArray new];
         _destructiveButtonIndex = NSNotFound;
     }
     
@@ -117,44 +113,22 @@
 
 - (void)setCancelButtonWithTitle:(NSString *)title
 {
-    [self clearCancelButtonData];
-    self.cancelButtonTitle = title;
-}
-
-- (void)setCancelButtonWithTitle:(NSString *)title target:(id)target action:(SEL)action
-{
-    [self clearCancelButtonData];
-    
-    self.cancelButtonTitle  = title;
-    self.cancelButtonTarget = target;
-    self.cancelButtonAction = action;
-}
-
-- (void)setCancelButtonWithTitle:(NSString *)title target:(id)target action:(SEL)action withObject:(id)object
-{
-    [self clearCancelButtonData];
-    
-    self.cancelButtonTitle  = title;
-    self.cancelButtonTarget = target;
-    self.cancelButtonAction = action;
-    self.cancelButtonObject = object;
+    self.cancelAction = [[TBAlertAction alloc] initWithTitle:title];
 }
 
 - (void)setCancelButtonWithTitle:(NSString *)title buttonAction:(void(^)())buttonBlock
 {
-    [self clearCancelButtonData];
-
-    self.cancelButtonTitle  = title;
-    self.cancelButtonBlock  = [buttonBlock copy];
+    self.cancelAction = [[TBAlertAction alloc] initWithTitle:title block:buttonBlock];
 }
 
-- (void)clearCancelButtonData
+- (void)setCancelButtonWithTitle:(NSString *)title target:(id)target action:(SEL)action
 {
-    self.cancelButtonTitle  = nil;
-    self.cancelButtonTarget = nil;
-    self.cancelButtonAction = nil;
-    self.cancelButtonObject = nil;
-    self.cancelButtonBlock  = nil;
+    self.cancelAction = [[TBAlertAction alloc] initWithTitle:title target:target action:action];
+}
+
+- (void)setCancelButtonWithTitle:(NSString *)title target:(id)target action:(SEL)action withObject:(id)object
+{
+    self.cancelAction = [[TBAlertAction alloc] initWithTitle:title target:target action:action object:object];
 }
 
 #pragma mark Destructive button
@@ -173,7 +147,7 @@
 {
     NSParameterAssert(title);
     
-    NSDictionary *button = @{@"title" : title};
+    TBAlertAction *button = [[TBAlertAction alloc] initWithTitle:title];
     [self.buttons addObject:button];
 }
 
@@ -181,29 +155,30 @@
 {
     NSParameterAssert(title); NSParameterAssert(target); NSParameterAssert(action);
     
-    NSDictionary *button = @{@"title" : title, @"target" : target, @"action" : [NSValue valueWithPointer:action]};
+    TBAlertAction *button = [[TBAlertAction alloc] initWithTitle:title target:target action:action];
     [self.buttons addObject:button];
 }
 
 - (void)addOtherButtonWithTitle:(NSString *)title target:(id)target action:(SEL)action withObject:(id)object
 {
-    if (!object)
-    {
-        [self addOtherButtonWithTitle:title target:target action:action];
-        return;
-    }
-    
     NSParameterAssert(title); NSParameterAssert(target); NSParameterAssert(action);
     
-    NSDictionary *button = @{@"title" : title, @"target" : target, @"action" : [NSValue valueWithPointer:action], @"object" : object};
-    [self.buttons addObject:button];
+    if (object)
+    {
+        TBAlertAction *button = [[TBAlertAction alloc] initWithTitle:title target:target action:action object:object];
+        [self.buttons addObject:button];
+    }
+    else
+    {
+        [self addOtherButtonWithTitle:title target:target action:action];
+    }
 }
 
 - (void)addOtherButtonWithTitle:(NSString *)title buttonAction:(void(^)())buttonBlock
 {
     NSParameterAssert(title); NSParameterAssert(buttonBlock);
     
-    NSDictionary *button = @{@"title" : title, @"block" : buttonBlock};
+    TBAlertAction *button = [[TBAlertAction alloc] initWithTitle:title block:buttonBlock];
     [self.buttons addObject:button];
 }
 
@@ -225,77 +200,17 @@
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:self.title message:self.message
                                                                           preferredStyle:(UIAlertControllerStyle)self.style];
         
-        // Create actions
-        for (NSDictionary *button in self.buttons)
+        // "Other button" actions
+        for (TBAlertAction *button in self.buttons)
         {
-            NSString *title              = button[@"title"];
-            TBAlertControllerBlock block = button[@"block"];
-            id target                    = button[@"target"];
-            UIAlertActionStyle style     = (i == self.destructiveButtonIndex) ? UIAlertActionStyleDestructive : UIAlertActionStyleDefault;
+            UIAlertActionStyle style = (i == self.destructiveButtonIndex) ? UIAlertActionStyleDestructive : UIAlertActionStyleDefault;
+            [actions addObject:[self actionFromAlertAction:button withStyle:style]];
             i++;
-            
-            // Targeted action
-            if (target)
-            {
-                SEL selector  = [button[@"action"] pointerValue];
-                id object     = button[@"object"];
-                UIAlertAction *action;
-                
-                // With object
-                if (object)
-                    action = [TBAlertController actionWithTitle:title
-                                                          style:style
-                                                         target:target
-                                                       selector:selector
-                                                         object:object];
-                // Without object
-                else
-                    action = [TBAlertController actionWithTitle:title
-                                                          style:style
-                                                         target:target
-                                                       selector:selector];
-                
-                [actions addObject:action];
-            }
-            // Block action or no action
-            else
-            {
-                UIAlertAction *action = [UIAlertAction actionWithTitle:title style:style handler:block];
-                [actions addObject:action];
-            }
-            
         }
         // Cancel action
-        if (self.cancelButtonTitle)
+        if (self.cancelAction)
         {
-            // Targeted action
-            if (self.cancelButtonTarget)
-            {
-                UIAlertAction *action;
-                
-                // With object
-                if (self.cancelButtonObject)
-                    action = [TBAlertController actionWithTitle:self.cancelButtonTitle
-                                                          style:UIAlertActionStyleCancel
-                                                         target:self.cancelButtonTarget
-                                                       selector:self.cancelButtonAction
-                                                         object:self.cancelButtonObject];
-                // Without object
-                else
-                    action = [TBAlertController actionWithTitle:self.cancelButtonTitle
-                                                          style:UIAlertActionStyleCancel
-                                                         target:self.cancelButtonTarget
-                                                       selector:self.cancelButtonAction];
-                
-                [actions addObject:action];
-            }
-            // Block action or no action
-            else
-            {
-                UIAlertAction *action = [UIAlertAction actionWithTitle:self.cancelButtonTitle style:UIAlertActionStyleCancel handler:self.cancelButtonBlock];
-                [actions addObject:action];
-            }
-            
+            [actions addObject:[self actionFromAlertAction:self.cancelAction withStyle:UIAlertActionStyleCancel]];
         }
         
         // Add actions to alert controller
@@ -309,6 +224,7 @@
     else
     {
         self.completion = [completion copy];
+        
         // Alert view
         if (self.style == TBAlertControllerStyleAlert)
             [self show];
@@ -316,6 +232,40 @@
         // Action sheet
         else if (self.style == TBAlertControllerStyleActionSheet)
             [self showInView:[viewController.view window]];
+    }
+}
+
+- (UIAlertAction *)actionFromAlertAction:(TBAlertAction *)button withStyle:(UIAlertActionStyle)style
+{
+    switch (button.style) {
+        case TBAlertActionStyleNoAction:
+        case TBAlertActionStyleBlock:
+        {
+            return [UIAlertAction actionWithTitle:button.title style:style handler:button.block];
+        }
+            break;
+            
+        case TBAlertActionStyleTargetObject:
+        case TBAlertActionStyleTarget:
+        {
+            UIAlertAction *action;
+            
+            // With object
+            if (button.object)
+                action = [TBAlertController actionWithTitle:button.title
+                                                      style:style
+                                                     target:button.target
+                                                   selector:button.action
+                                                     object:button.object];
+            // Without object
+            else
+                action = [TBAlertController actionWithTitle:button.title
+                                                      style:style
+                                                     target:button.target
+                                                   selector:button.action];
+            
+            return action;
+        }
     }
 }
 
@@ -328,15 +278,15 @@
     TBAlertView *alert = [[TBAlertView alloc] initWithTitle:self.title message:self.message controller:self];
     
     // Add buttons
-    for (NSDictionary *button in self.buttons)
+    for (TBAlertAction *button in self.buttons)
     {
-        NSString *title = [button objectForKey:@"title"];
+        NSString *title = button.title;
         [alert addButtonWithTitle:title];
     }
     // Add cancel button
-    if (self.cancelButtonTitle)
+    if (self.cancelAction)
     {
-        [alert addButtonWithTitle:self.cancelButtonTitle];
+        [alert addButtonWithTitle:self.cancelAction.title];
         [alert setCancelButtonIndex:alert.numberOfButtons-1];
     }
     
@@ -354,15 +304,15 @@
     TBActionSheet *actionSheet = [[TBActionSheet alloc] initWithTitle:self.title message:self.message controller:self];
     
     // Add buttons
-    for (NSDictionary *button in self.buttons)
+    for (TBAlertAction *button in self.buttons)
     {
-        NSString *title = button[@"title"];
+        NSString *title = button.title;
         [actionSheet addButtonWithTitle:title];
     }
     // Cancel button
-    if (self.cancelButtonTitle)
+    if (self.cancelAction)
     {
-        [actionSheet addButtonWithTitle:self.cancelButtonTitle];
+        [actionSheet addButtonWithTitle:self.cancelAction.title];
         actionSheet.cancelButtonIndex = actionSheet.numberOfButtons-1;
     }
     // Destructive button index
@@ -381,9 +331,9 @@
 
 - (void)didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-    NSDictionary *button         = [self buttonAtIndex:buttonIndex];
-    TBAlertControllerBlock block = button[@"block"];
-    id target                    = button[@"target"];
+    TBAlertAction *button         = [self buttonAtIndex:buttonIndex];
+    TBAlertControllerBlock block = button.block;
+    id target                    = button.target;
     
     // Block action
     if (block)
@@ -393,8 +343,8 @@
     // Targeted action
     else if (target)
     {
-        SEL action = [button[@"action"] pointerValue];
-        id object  = button[@"object"];
+        SEL action = button.action;
+        id object  = button.object;
         
         if (object)
         {
@@ -415,27 +365,14 @@
     }
 }
 
-- (NSDictionary *)buttonAtIndex:(NSUInteger)buttonIndex
+- (TBAlertAction *)buttonAtIndex:(NSUInteger)buttonIndex
 {
-    if (buttonIndex == [self.buttons count] && !self.cancelButtonTitle)
-        NSAssert(self.cancelButtonTitle, @"Invalid button index; out of bounds.");
-
-    
     // Cancel button
     if (buttonIndex == [self.buttons count])
     {
-        NSMutableDictionary *button = [NSMutableDictionary new];
-        [button setValue:self.cancelButtonTitle forKey:@"title"];
-        if (self.cancelButtonAction)
-            [button setObject:[NSValue valueWithPointer:self.cancelButtonAction] forKey:@"action"];
-        if (self.cancelButtonBlock)
-            [button setObject:self.cancelButtonBlock forKey:@"block"];
-        if (self.cancelButtonObject)
-            [button setObject:self.cancelButtonObject forKey:@"object"];
-        if (self.cancelButtonTarget)
-            [button setObject:self.cancelButtonTarget forKey:@"target"];
+        NSAssert(self.cancelAction, @"Invalid button index; out of bounds.");
+        return self.cancelAction;
         
-        return [button copy];
     }
     
     return self.buttons[buttonIndex];

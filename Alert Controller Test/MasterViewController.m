@@ -95,7 +95,7 @@
             alert.message = @"1 normal, cancel with block";
             [alert addOtherButtonWithTitle:@"OK"];
             [alert setCancelButtonWithTitle:@"Canc3l" buttonAction:^{
-                NSLog(@"cancel tapped, cell 3");
+                NSLog(@"cancel tapped");
             }];
             [alert showFromViewController:self];
             break;

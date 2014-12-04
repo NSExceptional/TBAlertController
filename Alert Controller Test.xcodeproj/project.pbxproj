@@ -12,17 +12,9 @@
 		B440543C1A2C611600DBFC91 /* MasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B440543B1A2C611600DBFC91 /* MasterViewController.m */; };
 		B44054421A2C611600DBFC91 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B44054401A2C611600DBFC91 /* Main.storyboard */; };
 		B440545E1A2C612C00DBFC91 /* TBAlertController.m in Sources */ = {isa = PBXBuildFile; fileRef = B440545D1A2C612C00DBFC91 /* TBAlertController.m */; };
+		B44054651A301ABA00DBFC91 /* TBAlertAction.m in Sources */ = {isa = PBXBuildFile; fileRef = B44054641A301ABA00DBFC91 /* TBAlertAction.m */; };
+		B44054691A30354400DBFC91 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B44054681A30354400DBFC91 /* Images.xcassets */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		B440544D1A2C611600DBFC91 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = B44054281A2C611600DBFC91 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = B440542F1A2C611600DBFC91;
-			remoteInfo = "Alert Controller Test";
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		B44054301A2C611600DBFC91 /* Alert Controller Test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Alert Controller Test.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -33,20 +25,15 @@
 		B440543A1A2C611600DBFC91 /* MasterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MasterViewController.h; sourceTree = "<group>"; };
 		B440543B1A2C611600DBFC91 /* MasterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MasterViewController.m; sourceTree = "<group>"; };
 		B44054411A2C611600DBFC91 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		B440544C1A2C611600DBFC91 /* Alert Controller TestTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Alert Controller TestTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B440545C1A2C612C00DBFC91 /* TBAlertController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBAlertController.h; sourceTree = "<group>"; };
 		B440545D1A2C612C00DBFC91 /* TBAlertController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBAlertController.m; sourceTree = "<group>"; };
+		B44054631A301ABA00DBFC91 /* TBAlertAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBAlertAction.h; sourceTree = "<group>"; };
+		B44054641A301ABA00DBFC91 /* TBAlertAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBAlertAction.m; sourceTree = "<group>"; };
+		B44054681A30354400DBFC91 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		B440542D1A2C611600DBFC91 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		B44054491A2C611600DBFC91 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -68,7 +55,6 @@
 			isa = PBXGroup;
 			children = (
 				B44054301A2C611600DBFC91 /* Alert Controller Test.app */,
-				B440544C1A2C611600DBFC91 /* Alert Controller TestTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -85,8 +71,8 @@
 		B440545F1A2D5C6800DBFC91 /* Alert Controller */ = {
 			isa = PBXGroup;
 			children = (
-				B440545C1A2C612C00DBFC91 /* TBAlertController.h */,
-				B440545D1A2C612C00DBFC91 /* TBAlertController.m */,
+				B44054681A30354400DBFC91 /* Images.xcassets */,
+				B44054621A2FE95B00DBFC91 /* TBAlertController */,
 				B44054371A2C611600DBFC91 /* AppDelegate.h */,
 				B44054381A2C611600DBFC91 /* AppDelegate.m */,
 				B440543A1A2C611600DBFC91 /* MasterViewController.h */,
@@ -96,6 +82,17 @@
 			);
 			name = "Alert Controller";
 			path = "Alert Controller Test";
+			sourceTree = "<group>";
+		};
+		B44054621A2FE95B00DBFC91 /* TBAlertController */ = {
+			isa = PBXGroup;
+			children = (
+				B440545C1A2C612C00DBFC91 /* TBAlertController.h */,
+				B440545D1A2C612C00DBFC91 /* TBAlertController.m */,
+				B44054631A301ABA00DBFC91 /* TBAlertAction.h */,
+				B44054641A301ABA00DBFC91 /* TBAlertAction.m */,
+			);
+			name = TBAlertController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -118,24 +115,6 @@
 			productReference = B44054301A2C611600DBFC91 /* Alert Controller Test.app */;
 			productType = "com.apple.product-type.application";
 		};
-		B440544B1A2C611600DBFC91 /* Alert Controller TestTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = B44054591A2C611600DBFC91 /* Build configuration list for PBXNativeTarget "Alert Controller TestTests" */;
-			buildPhases = (
-				B44054481A2C611600DBFC91 /* Sources */,
-				B44054491A2C611600DBFC91 /* Frameworks */,
-				B440544A1A2C611600DBFC91 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				B440544E1A2C611600DBFC91 /* PBXTargetDependency */,
-			);
-			name = "Alert Controller TestTests";
-			productName = "Alert Controller TestTests";
-			productReference = B440544C1A2C611600DBFC91 /* Alert Controller TestTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -147,10 +126,6 @@
 				TargetAttributes = {
 					B440542F1A2C611600DBFC91 = {
 						CreatedOnToolsVersion = 6.1;
-					};
-					B440544B1A2C611600DBFC91 = {
-						CreatedOnToolsVersion = 6.1;
-						TestTargetID = B440542F1A2C611600DBFC91;
 					};
 				};
 			};
@@ -168,7 +143,6 @@
 			projectRoot = "";
 			targets = (
 				B440542F1A2C611600DBFC91 /* Alert Controller Test */,
-				B440544B1A2C611600DBFC91 /* Alert Controller TestTests */,
 			);
 		};
 /* End PBXProject section */
@@ -179,13 +153,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B44054421A2C611600DBFC91 /* Main.storyboard in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		B440544A1A2C611600DBFC91 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
+				B44054691A30354400DBFC91 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -199,26 +167,12 @@
 				B44054391A2C611600DBFC91 /* AppDelegate.m in Sources */,
 				B440545E1A2C612C00DBFC91 /* TBAlertController.m in Sources */,
 				B440543C1A2C611600DBFC91 /* MasterViewController.m in Sources */,
+				B44054651A301ABA00DBFC91 /* TBAlertAction.m in Sources */,
 				B44054361A2C611600DBFC91 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		B44054481A2C611600DBFC91 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		B440544E1A2C611600DBFC91 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = B440542F1A2C611600DBFC91 /* Alert Controller Test */;
-			targetProxy = B440544D1A2C611600DBFC91 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		B44054401A2C611600DBFC91 /* Main.storyboard */ = {
@@ -314,6 +268,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = "Alert Controller Test/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -325,44 +280,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = "Alert Controller Test/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Release;
-		};
-		B440545A1A2C611600DBFC91 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = "Alert Controller TestTests/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Alert Controller Test.app/Alert Controller Test";
-			};
-			name = Debug;
-		};
-		B440545B1A2C611600DBFC91 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = "Alert Controller TestTests/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Alert Controller Test.app/Alert Controller Test";
 			};
 			name = Release;
 		};
@@ -385,14 +307,7 @@
 				B44054581A2C611600DBFC91 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-		};
-		B44054591A2C611600DBFC91 /* Build configuration list for PBXNativeTarget "Alert Controller TestTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				B440545A1A2C611600DBFC91 /* Debug */,
-				B440545B1A2C611600DBFC91 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -94,7 +94,7 @@
             alert.title = @"Alert";
             alert.message = @"1 normal, cancel with block";
             [alert addOtherButtonWithTitle:@"OK"];
-            [alert setCancelButtonWithTitle:@"Canc3l" buttonAction:^{
+            [alert setCancelButtonWithTitle:@"Canc3l" buttonAction:^(NSArray *strings) {
                 NSLog(@"cancel tapped");
             }];
             [alert showFromViewController:self];
@@ -146,6 +146,56 @@
             alert.destructiveButtonIndex = 1;
             [alert setButtonEnabled:NO atIndex:[alert numberOfButtons]-1];
             [alert showFromViewController:self];
+            break;
+            // text field
+        case 9: {
+            alert = [[TBAlertController alloc] initWithTitle:@"Alert" message:@"This will NSLog what you enter" style:style];
+            [alert addOtherButtonWithTitle:@"Log input" buttonAction:^(NSArray *strings) {
+                NSLog(@"%@", strings[0]);
+            }];
+            [alert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+                textField.placeholder = @"poop";
+            }];
+            [alert showFromViewController:self];
+            break;
+        }
+            // alert view style login and password
+        case 10: {
+            alert = [[TBAlertController alloc] initWithTitle:@"Alert" message:@"This will NSLog what you enter" style:style];
+            [alert addOtherButtonWithTitle:@"Log input" buttonAction:^(NSArray *strings){
+                NSString *login = strings[0];
+                NSString *pass  = strings[1];
+                NSLog(@"\nLogin: %@\nPassword: %@", login, pass);
+            }];
+            alert.alertViewStyle = UIAlertViewStyleLoginAndPasswordInput;
+            [alert showFromViewController:self];
+            break;
+        }
+            // added text field + alert view style plain + other field
+        case 11: {
+            alert = [[TBAlertController alloc] initWithTitle:@"Alert" message:@"This will NSLog what you enter" style:style];
+            if ([UIAlertController class])
+                [alert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+                    textField.placeholder = @"Added 1st, 2nd field";
+                }];
+            
+            alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+            
+            if ([UIAlertController class])
+                [alert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+                    textField.placeholder = @"Added 3rd";
+                }];
+            
+            [alert addOtherButtonWithTitle:@"Log input" buttonAction:^(NSArray *strings) {
+                BOOL iOS8 = [strings count] > 1;
+                NSString *first  = strings[0];
+                NSString *second = iOS8 ? strings[1] : @"";
+                NSString *third  = iOS8 ? strings[2] : @"";
+                NSLog(@"\nFirst: %@\nSecond: %@\nThird: %@", first, second, third);
+            }];
+            [alert showFromViewController:self];
+            break;
+        }
         default:
             break;
     }

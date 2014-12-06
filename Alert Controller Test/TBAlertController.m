@@ -270,6 +270,14 @@
     [self.textFieldHandlers addObject:configurationHandler];
 }
 
+- (void)setAlertViewStyle:(UIAlertViewStyle)alertViewStyle
+{
+    NSAssert(self.style = TBAlertControllerStyleAlert,
+             @"Text fields can only be added to alert controllers of style TBAlertControllerStyleAlert.");
+    
+    _alertViewStyle = alertViewStyle;
+}
+
 - (void)getTextFromTextFields:(NSArray *)textFields
 {
     for (UITextField *textField in textFields)

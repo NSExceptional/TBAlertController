@@ -7,11 +7,19 @@ Installation:
 =============
 Add `TBAlertController.h` and `TBAlertController.m` to your project and import `TBAlertController.h`. Cocoapods support coming soon!
 
-About:
-=============
+About
+=====
 `TBAlertController` tries to be as much of a drop-in replacement for the iOS 7 classes as possible, and adds a simpler interface for iOS 8 by allowing you to directly add buttons instead of first creating action objects. This feature is coming soon, however, to remain consitent with `UIAlertController`'s interface.
 
 The only major difference for iOS 7 is that `TBAlertController` does away with delegates in favor of block and target-selector style actions. Delegate support will not be added, since this project is directed at developers who want to minimize code involving action sheets and alert views on iOS 7 and 8. It is possible to use the same code for both platforms; `TBAlertController` takes care of the rest for you.
+
+Features
+========
+- No more delegates! And no more iOS 7 / iOS 8 conditional code. One alert to rule them all...
+- Allows for reusable methods thanks to the target-selector style button actions, which usually fit on a single line.
+- Tries to be as much of a drop-in replacement for the iOS 8 API as possible. The method signatures are different but work as expected.
+- Supports adding text fields using `UIAlertViewStyle` for iOS 7 and 8, and `addTextFieldWithConfigurationHandler:` for iOS 8.
+- Add buttons directly using any of the `addOtherButtonWithTitle...` methods, or by creating a `TBAlertAction` and adding that. Adding actions directly allows for slimmer code, while creating and adding `TBAlertAction`s works similar to how `UIAlertController` adds buttons.
 
 Examples:
 
@@ -60,12 +68,13 @@ TBAlertController *alert = [[TBAlertController alloc] initWithStyle:TBAlertContr
 // iOS 7 and 8
 alert.alertViewStyle = UIAlertViewStylePlainTextInput;
 ```
-
+Gotchas
+=======
 The following will throw exceptions:
-- calling any method only available in iOS 8, indicated by `NS_AVAILABLE_IOS`
-- adding a text field when using `TBAlertControllerStyleActionSheet`
-- setting the destructive button index when using the alert view style on iOS 7 (since iOS 7 doesn't support this)
-- passing `nil` for any of the folliwing: title, target, action, or a block for `buttonAction:`. You may pass `nil` to the `object` parameter of `addOtherButtonWithTitle:target:action:withObject:`, as it will call just call the parent method which takes no `object` parameter.
+- Calling any method only available in iOS 8, indicated by `NS_AVAILABLE_IOS(8_0)`, including `addTextFieldWithConfigurationHandler`.
+- Adding a text field when using `TBAlertControllerStyleActionSheet` and `setButtonEnabled:atIndex:`.
+- Setting `destructiveButtonIndex` when using the alert view style on iOS 7 (since iOS 7 doesn't support this).
+- Passing `nil` for any of the folliwing: title, target, action, or a block for `buttonAction:`. You may pass `nil` to the `object` parameter of `addOtherButtonWithTitle:target:action:withObject:`, as it will call just call the parent method which takes no `object` parameter.
 
 TODO
 - Cocoapods support

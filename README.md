@@ -59,5 +59,4 @@ The following will throw exceptions:
 - passing `nil` for any of the folliwing: title, target, action, or a block for `buttonAction:`. You may pass `nil` to the `object` parameter of `addOtherButtonWithTitle:target:action:withObject:`, as it will call just call the parent method which takes no `object` parameter.
 
 TODO
-- Add support for alert views with text boxes.
 - Cocoapods support

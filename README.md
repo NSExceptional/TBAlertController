@@ -1,6 +1,11 @@
 TBAlertController
 =================
 
+[![CI Status](http://img.shields.io/travis/Tanner Bennett/TBAlertController.svg?style=flat)](https://travis-ci.org/Tanner Bennett/TBAlertController)
+[![Version](https://img.shields.io/cocoapods/v/TBAlertController.svg?style=flat)](http://cocoadocs.org/docsets/TBAlertController)
+[![License](https://img.shields.io/cocoapods/l/TBAlertController.svg?style=flat)](http://cocoadocs.org/docsets/TBAlertController)
+[![Platform](https://img.shields.io/cocoapods/p/TBAlertController.svg?style=flat)](http://cocoadocs.org/docsets/TBAlertController)
+
 `UIAlertController`, `UIAlertView`, and `UIActionSheet` unified for developers who want to support iOS 7 and 8.
 
 Installation:

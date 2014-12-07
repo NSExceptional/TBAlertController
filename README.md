@@ -10,7 +10,7 @@ TBAlertController
 
 Installation:
 =============
-Add `TBAlertController.h` and `TBAlertController.m` to your project and import `TBAlertController.h`. Cocoapods support coming soon!
+Add `TBAlertController.h`, `TBAlertController.m`, `TBAlertAction.h`, and `TBAlertAction.m` to your project and import `TBAlertController.h`, and `TBAlertAction.h` if you need it. Cocoapods support coming soon!
 
 About
 =====

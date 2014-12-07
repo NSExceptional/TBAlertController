@@ -14,7 +14,7 @@ About:
 The only major difference for iOS 7 is that `TBAlertController` does away with delegates in favor of block and target-selector style actions. Delegate support will not be added, since this project is directed at developers who want to minimize code involving action sheets and alert views on iOS 7 and 8. It is possible to use the same code for both platforms; `TBAlertController` takes care of the rest for you.
 
 Examples:
-
+            ``` obj-c
             TBAlertController *alert = [[TBAlertController alloc] initWithStyle:TBAlertControllerStyleActionSheet];
             alert.title   = @"Alert";
             alert.message = @"This is a message!";
@@ -22,7 +22,8 @@ Examples:
             [alert addOtherButtonWithTitle:@"Delete" target:self action:@selector(selfDestruct)];
             [alert setCancelButtonWithTitle:@"Cancel"];
             alert.destructiveButtonIndex = 1;
-
+            ```
+            
 This will create an action sheet with the title `Alert` and a message, as well as three buttons: `OK` with a block style action, `Delete` with a target-selector style action (as well as being the "destructive" button), and a `Cancel` button which only dismisses the alert. The cancel button will always appear last in the list of buttons if set using one of the `setCancelButton...` methods.
 
 Display an alert with `showFromViewController:` or `showFromViewController:animated:completion:`.

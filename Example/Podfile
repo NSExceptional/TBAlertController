@@ -1,0 +1,11 @@
+source 'https://github.com/CocoaPods/Specs.git'
+
+target 'TBAlertController', :exclusive => true do
+  pod "TBAlertController", :path => "../"
+end
+
+target 'Tests', :exclusive => true do
+  pod "TBAlertController", :path => "../"
+
+  pod 'FBSnapshotTestCase'
+end

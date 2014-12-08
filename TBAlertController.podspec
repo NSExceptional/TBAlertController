@@ -3,7 +3,7 @@
 Pod::Spec.new do |s|
   s.name             = "TBAlertController"
   s.version          = "0.1.0"
-  s.summary          = "A unified version of UIAlertController, UIAlertView, and UIActionSheet."
+  s.summary          = "UIAlertController + UIAlertView + UIActionSheet = TBAlertController"
   s.description      = <<-DESC
                        UIAlertController, UIAlertView, and UIActionSheet unified for developers who want to support iOS 7 and 8. No more conditional code when using any of these classes!
                        DESC
@@ -17,10 +17,6 @@ Pod::Spec.new do |s|
   s.requires_arc = true
 
   s.source_files = 'Classes'
-  s.resource_bundles = {
-    'TBAlertController' => ['Assets/*.png']
-  }
-
   s.public_header_files = 'Classes/*.h'
   s.frameworks = 'UIKit'
 end

@@ -10,7 +10,13 @@ TBAlertController
 
 Installation:
 =============
-Add `TBAlertController.h`, `TBAlertController.m`, `TBAlertAction.h`, and `TBAlertAction.m` to your project and import `TBAlertController.h`, and `TBAlertAction.h` if you need it. Cocoapods support coming soon!
+Cocoapods
+- Add `pod 'TBAlertController' to your podfile, then run `pod install`.
+
+Manual installation
+- Clone this repo
+- Add `TBAlertController.h`, `TBAlertController.m`, `TBAlertAction.h`, and `TBAlertAction.m` to your project
+- Import `TBAlertController.h`, and optionally `TBAlertAction.h` if you plan to use it.
 
 About
 =====
@@ -26,8 +32,8 @@ Features
 - Supports adding text fields using `UIAlertViewStyle` for iOS 7 and 8, and `addTextFieldWithConfigurationHandler:` for iOS 8.
 - Add buttons directly using any of the `addOtherButtonWithTitle...` methods, or by creating a `TBAlertAction` and adding that. Adding actions directly allows for slimmer code, while creating and adding `TBAlertAction`s works similar to how `UIAlertController` adds buttons.
 
-Examples:
-
+Examples
+========
 ``` obj-c
 
 TBAlertController *alert = [[TBAlertController alloc] initWithStyle:TBAlertControllerStyleActionSheet];
@@ -81,5 +87,6 @@ The following will throw exceptions:
 - Setting `destructiveButtonIndex` when using the alert view style on iOS 7 (since iOS 7 doesn't support this).
 - Passing `nil` for any of the folliwing: title, target, action, or a block for `buttonAction:`. You may pass `nil` to the `object` parameter of `addOtherButtonWithTitle:target:action:withObject:`, as it will call just call the parent method which takes no `object` parameter.
 
-TODO
-- Cocoapods support
+License
+=======
+MIT license. See LICENSE file for more details.

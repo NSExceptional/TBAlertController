@@ -21,6 +21,7 @@
 		6003F5BC195388D20070C39A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5BB195388D20070C39A /* Tests.m */; };
 		B4C6A4EB1A349874003C255A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B4C6A4E81A349874003C255A /* AppDelegate.m */; };
 		B4C6A4EC1A349874003C255A /* TBViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4C6A4EA1A349874003C255A /* TBViewController.m */; };
+		B4D6FD0B1A49343A000161A4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B4D6FD0A1A49343A000161A4 /* Main.storyboard */; };
 		D999065B06F98C2E9A05690F /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 26FCFAFD393230101BF49A89 /* libPods-Tests.a */; };
 /* End PBXBuildFile section */
 
@@ -60,6 +61,7 @@
 		B4C6A4E81A349874003C255A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		B4C6A4E91A349874003C255A /* TBViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBViewController.h; sourceTree = "<group>"; };
 		B4C6A4EA1A349874003C255A /* TBViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBViewController.m; sourceTree = "<group>"; };
+		B4D6FD0A1A49343A000161A4 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		BFBCC547AEC97153F318B147 /* Pods-Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		D782CB9F01DF4EA11F929F67 /* Pods-TBAlertController.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TBAlertController.release.xcconfig"; path = "Pods/Target Support Files/Pods-TBAlertController/Pods-TBAlertController.release.xcconfig"; sourceTree = "<group>"; };
 		E3DE9ED4562470376B130BBB /* libPods-TBAlertController.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TBAlertController.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -139,6 +141,7 @@
 		6003F593195388D20070C39A /* TBAlertController */ = {
 			isa = PBXGroup;
 			children = (
+				B4D6FD0A1A49343A000161A4 /* Main.storyboard */,
 				B4C6A4E71A349874003C255A /* AppDelegate.h */,
 				B4C6A4E81A349874003C255A /* AppDelegate.m */,
 				B4C6A4E91A349874003C255A /* TBViewController.h */,
@@ -270,6 +273,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B4D6FD0B1A49343A000161A4 /* Main.storyboard in Resources */,
 				6003F5A9195388D20070C39A /* Images.xcassets in Resources */,
 				6003F598195388D20070C39A /* InfoPlist.strings in Resources */,
 			);

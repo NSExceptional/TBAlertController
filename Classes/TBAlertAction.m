@@ -10,8 +10,10 @@
 
 @implementation TBAlertAction
 
-- (instancetype)initWithTitle:(NSString *)title
+- (id)initWithTitle:(NSString *)title
 {
+    NSParameterAssert(title);
+    
     self = [super init];
     if (self) {
         _title   = title;
@@ -22,7 +24,7 @@
     return self;
 }
 
-- (instancetype)initWithTitle:(NSString *)title block:(void (^)())block
+- (id)initWithTitle:(NSString *)title block:(TBAlertActionBlock)block
 {
     self = [self initWithTitle:title];
     if (self) {
@@ -33,10 +35,12 @@
     return self;
 }
 
-- (instancetype)initWithTitle:(NSString *)title target:(id)target action:(SEL)action
+- (id)initWithTitle:(NSString *)title target:(id)target action:(SEL)action
 {
+    NSParameterAssert((target && action) || (!target && !action)); // All or none
     self = [self initWithTitle:title];
-    if (self) {
+    
+    if (self && target && action) {
         _target = target;
         _action = action;
         _style = TBAlertActionStyleTarget;
@@ -45,8 +49,9 @@
     return self;
 }
 
-- (instancetype)initWithTitle:(NSString *)title target:(id)target action:(SEL)action object:(id)object
+- (id)initWithTitle:(NSString *)title target:(id)target action:(SEL)action object:(id)object
 {
+    NSParameterAssert(object);
     self = [self initWithTitle:title target:target action:action];
     if (self) {
         _object = object;
@@ -54,6 +59,45 @@
     }
     
     return self;
+}
+
+- (void)perform {
+    [self perform:@[]];
+}
+
+- (void)perform:(NSArray *)textFieldInputStrings
+{
+    if (!textFieldInputStrings)
+        textFieldInputStrings = @[];
+    
+    switch (self.style) {
+        case TBAlertActionStyleNoAction:
+            break;
+        case TBAlertActionStyleBlock: {
+            
+            if (self.block)
+                self.block(textFieldInputStrings);
+            break;
+        }
+        case TBAlertActionStyleTarget: {
+            
+            IMP imp = [self.target methodForSelector:self.action];
+            void (*func)(id, SEL) = (void *)imp;
+            
+            if ([self.target respondsToSelector:self.action])
+                func(self.target, self.action);
+            break;
+        }
+        case TBAlertActionStyleTargetObject: {
+            
+            IMP imp = [self.target methodForSelector:self.action];
+            void (*func)(id, SEL, id) = (void *)imp;
+            
+            if ([self.target respondsToSelector:self.action])
+                func(self.target, self.action, self.object);
+            break;
+        }
+    }
 }
 
 @end

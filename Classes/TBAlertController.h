@@ -22,6 +22,7 @@ typedef NS_ENUM(NSInteger, TBAlertControllerStyle) {
 ///------------------
 /// @name Properties
 ///------------------
+
 #pragma mark Properties
 
 /**
@@ -63,6 +64,7 @@ typedef NS_ENUM(NSInteger, TBAlertControllerStyle) {
 ///--------------------
 /// @name Initializers
 ///--------------------
+
 #pragma mark Initializers
 
 /**
@@ -94,6 +96,7 @@ typedef NS_ENUM(NSInteger, TBAlertControllerStyle) {
 ///-------------------------
 /// @name The Cancel Button
 ///-------------------------
+
 #pragma mark Cancel button
 
 /**
@@ -145,6 +148,7 @@ typedef NS_ENUM(NSInteger, TBAlertControllerStyle) {
 ///---------------------
 /// @name Other buttons
 ///---------------------
+
 #pragma mark Other buttons
 
 /**
@@ -198,6 +202,7 @@ typedef NS_ENUM(NSInteger, TBAlertControllerStyle) {
 ///-------------------
 /// @name Text Fields
 ///-------------------
+
 #pragma mark Text Fields
 
 /**
@@ -212,6 +217,7 @@ typedef NS_ENUM(NSInteger, TBAlertControllerStyle) {
 ///----------------------------------------------------
 /// @name Displaying / dismissing the alert controller
 ///----------------------------------------------------
+
 #pragma mark Displaying / dismissing the alert controller
 
 /**

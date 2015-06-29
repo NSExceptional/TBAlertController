@@ -1,6 +1,8 @@
 TBAlertController
 =================
 
+[![Issues](https://img.shields.io/github/issues-raw/ThePantsThief/TBAlertController.svg?style=flat)](https://github.com/ThePantsThief/TBAlertController/issues)
+[![Stars](https://img.shields.io/github/stars/ThePantsThief/TBAlertController.svg?style=flat)](https://github.com/ThePantsThief/TBAlertController/stargazers)
 [![CI Status](http://img.shields.io/travis/Tanner Bennett/TBAlertController.svg?style=flat)](https://travis-ci.org/Tanner Bennett/TBAlertController)
 [![Version](https://img.shields.io/cocoapods/v/TBAlertController.svg?style=flat)](http://cocoadocs.org/docsets/TBAlertController)
 [![License](https://img.shields.io/cocoapods/l/TBAlertController.svg?style=flat)](http://cocoadocs.org/docsets/TBAlertController)

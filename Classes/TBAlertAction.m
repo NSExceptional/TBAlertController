@@ -10,8 +10,7 @@
 
 @implementation TBAlertAction
 
-- (id)initWithTitle:(NSString *)title
-{
+- (id)initWithTitle:(NSString *)title {
     NSParameterAssert(title);
     
     self = [super init];
@@ -24,8 +23,7 @@
     return self;
 }
 
-- (id)initWithTitle:(NSString *)title block:(TBAlertActionBlock)block
-{
+- (id)initWithTitle:(NSString *)title block:(TBAlertActionBlock)block {
     self = [self initWithTitle:title];
     if (self) {
         _block = block;
@@ -35,8 +33,7 @@
     return self;
 }
 
-- (id)initWithTitle:(NSString *)title target:(id)target action:(SEL)action
-{
+- (id)initWithTitle:(NSString *)title target:(id)target action:(SEL)action {
     NSParameterAssert((target && action) || (!target && !action)); // All or none
     self = [self initWithTitle:title];
     
@@ -49,13 +46,12 @@
     return self;
 }
 
-- (id)initWithTitle:(NSString *)title target:(id)target action:(SEL)action object:(id)object
-{
+- (id)initWithTitle:(NSString *)title target:(id)target action:(SEL)action object:(id)object {
     NSParameterAssert(object);
     self = [self initWithTitle:title target:target action:action];
     if (self) {
         _object = object;
-        _style = TBAlertActionStyleTargetObject;
+        _style  = TBAlertActionStyleTargetObject;
     }
     
     return self;
@@ -65,8 +61,7 @@
     [self perform:@[]];
 }
 
-- (void)perform:(NSArray *)textFieldInputStrings
-{
+- (void)perform:(NSArray *)textFieldInputStrings {
     if (!textFieldInputStrings)
         textFieldInputStrings = @[];
     

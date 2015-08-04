@@ -26,8 +26,6 @@ DerivedData
 *.lock
 *.xcuserstate
 
-Luna.xcworkspace/xcuserdata/tantan.xcuserdatad/UserInterfaceState.xcuserstate
-
 .AppleDouble
 .LSOverride
 
@@ -47,3 +45,7 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+
+Example/Pods/**/*
+Example/TBAlertController.xcworkspace
+Example/TBAlertController.xcworkspace/contents.xcworkspacedata

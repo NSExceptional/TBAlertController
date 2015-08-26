@@ -8,7 +8,7 @@ TBAlertController
 [![License](https://img.shields.io/cocoapods/l/TBAlertController.svg?style=flat)](http://cocoadocs.org/docsets/TBAlertController)
 [![Platform](https://img.shields.io/cocoapods/p/TBAlertController.svg?style=flat)](http://cocoadocs.org/docsets/TBAlertController)
 
-`UIAlertController`, `UIAlertView`, and `UIActionSheet` unified for developers who want to support iOS 7 and 8.
+`UIAlertController`, `UIAlertView`, and `UIActionSheet` unified for developers who want to support iOS 7, 8, and 9.
 
 Installation:
 =============
@@ -28,7 +28,7 @@ The only major difference for iOS 7 is that `TBAlertController` does away with d
 
 Features
 ========
-- No more delegates! And no more iOS 7 / iOS 8 conditional code. One alert to rule them all...
+- No more delegates! And no more iOS 7 / 8 / 9 conditional code. One alert to rule them all...
 - Allows for reusable methods thanks to the target-selector style button actions, which usually fit on a single line.
 - Tries to be as much of a drop-in replacement for the iOS 8 API as possible. The method signatures are different but work as expected.
 - Supports adding text fields using `UIAlertViewStyle` for iOS 7 and 8, and `addTextFieldWithConfigurationHandler:` for iOS 8.

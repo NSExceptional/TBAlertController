@@ -2,10 +2,10 @@
 
 Pod::Spec.new do |s|
   s.name             = "TBAlertController"
-  s.version          = "2.0.2"
+  s.version          = "3.0.0"
   s.summary          = "UIAlertController + UIAlertView + UIActionSheet = TBAlertController"
   s.description      = <<-DESC
-                       UIAlertController, UIAlertView, and UIActionSheet unified for developers who want to support iOS 7 and 8. No more conditional code when using any of these classes!
+                       UIAlertController, UIAlertView, and UIActionSheet unified for developers who want to support iOS 7, 8, and 9. No more conditional code when using any of these classes!
                        DESC
   s.homepage         = "https://github.com/ThePantsThief/TBAlertController"
   s.license          = 'MIT'

@@ -18,7 +18,7 @@
 
 @protocol TBAlert <NSObject>
 
-@property (nonatomic) NSMutableArray *textFieldInputStrings;
+- (NSMutableArray *)textFieldInputStrings;
 - (void)didDismissWithButtonIndex:(NSInteger)buttonIndex;
 
 @end
@@ -93,6 +93,9 @@
 @property (nonatomic      ) NSMutableArray *buttons;
 @property (nonatomic      ) NSMutableArray *textFieldHandlers;
 @property (nonatomic, copy) void           (^completion)();
+/** An array of \c NSStrings containing the text in each of the alert controller's text views *after* it has been dismissed.
+ This array is passed to each \c TBAlertActionBlock, so it is only necessary to access this property if you for some reason need to keep it around for later use. */
+@property (nonatomic) NSMutableArray *textFieldInputStrings;
 
 @end
 
@@ -161,7 +164,7 @@
     self.cancelAction = [[TBAlertAction alloc] initWithTitle:title];
 }
 
-- (void)setCancelButtonWithTitle:(NSString *)title buttonAction:(TBAlertActionTextFieldsBlock)buttonBlock {
+- (void)setCancelButtonWithTitle:(NSString *)title buttonAction:(TBAlertActionBlock)buttonBlock {
     self.cancelAction = [[TBAlertAction alloc] initWithTitle:title block:buttonBlock];
 }
 
@@ -278,7 +281,7 @@
     [self showFromViewController:viewController animated:YES completion:nil];
 }
 
-- (void)showFromViewController:(UIViewController *)viewController animated:(BOOL)animated completion:(TBAlertActionBlock)completion {
+- (void)showFromViewController:(UIViewController *)viewController animated:(BOOL)animated completion:(TBVoidBlock)completion {
     // iOS 8+
     if ([UIAlertController class]) {
         NSUInteger i = 0;
@@ -446,7 +449,7 @@
     }
 }
 
-- (void)dismissAnimated:(BOOL)animated completion:(TBAlertActionBlock)completion {
+- (void)dismissAnimated:(BOOL)animated completion:(TBVoidBlock)completion {
     NSAssert([UIAlertController class], @"This method is only available on iOS 8.");
     [(UIAlertController *)self.inCaseOfManualDismissal dismissViewControllerAnimated:animated completion:completion];
 }
@@ -455,7 +458,7 @@
 
 - (void)didDismissWithButtonIndex:(NSInteger)buttonIndex {
     TBAlertAction *button = [self buttonAtIndex:buttonIndex];
-    [button perform:[self.textFieldInputStrings copy]];
+    [button perform:self.textFieldInputStrings.copy];
 }
 
 - (TBAlertAction *)buttonAtIndex:(NSUInteger)buttonIndex {

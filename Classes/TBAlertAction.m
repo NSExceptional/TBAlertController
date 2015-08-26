@@ -24,6 +24,7 @@
 }
 
 - (id)initWithTitle:(NSString *)title block:(TBAlertActionBlock)block {
+    NSParameterAssert(block);
     self = [self initWithTitle:title];
     if (self) {
         _block = block;
@@ -34,7 +35,7 @@
 }
 
 - (id)initWithTitle:(NSString *)title target:(id)target action:(SEL)action {
-    NSParameterAssert((target && action) || (!target && !action)); // All or none
+    NSParameterAssert(target); NSParameterAssert(action);
     self = [self initWithTitle:title];
     
     if (self && target && action) {
@@ -47,7 +48,6 @@
 }
 
 - (id)initWithTitle:(NSString *)title target:(id)target action:(SEL)action object:(id)object {
-    NSParameterAssert(object);
     self = [self initWithTitle:title target:target action:action];
     if (self) {
         _object = object;

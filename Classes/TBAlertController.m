@@ -333,7 +333,13 @@
         // Add actions to alert controller
         for (UIAlertAction *action in actions)
              [alertController addAction:action];
-        
+
+        if( [UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad )
+        {
+            UIPopoverPresentationController *popPresentation = [alertController popoverPresentationController];
+            popPresentation.sourceView = self.popoverSourceView ? self.popoverSourceView : viewController.view;
+        }
+
         [viewController presentViewController:alertController animated:animated completion:completion];
         
     }

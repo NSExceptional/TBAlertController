@@ -36,6 +36,8 @@ typedef NS_ENUM(NSInteger, TBAlertControllerStyle) {
 @property (nonatomic, copy, nullable) NSString         *title;
 /** The message of the alert controller. */
 @property (nonatomic, copy, nullable) NSString         *message;
+/** The reference view for UIPopoverViewController on iPad */
+@property (nonatomic, assign, nullable) UIView         *popoverSourceView;
 /** Defaults to \c NSNotFound. Values greater than the number of buttons are allowed but will be ignored and discarded. */
 @property (nonatomic) NSInteger destructiveButtonIndex;
 /** @return The number of "other buttons" added + the cancel button, if you added one. */

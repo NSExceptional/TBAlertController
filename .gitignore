@@ -47,5 +47,4 @@ Temporary Items
 .apdisk
 
 Example/Pods/**/*
-Example/TBAlertController.xcworkspace
-Example/TBAlertController.xcworkspace/contents.xcworkspacedata
+Example/*.xcworkspace/*

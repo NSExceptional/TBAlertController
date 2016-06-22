@@ -16,6 +16,12 @@
 #pragma mark Created to use itself as the delegate for iOS 7 and earlier.
 
 
+@protocol TBPresentable <NSObject>
+@property (nonatomic) NSString *title;
+@optional
+@property (nonatomic) NSString *message;
+@end
+
 @protocol TBAlert <NSObject>
 
 - (NSMutableArray *)textFieldInputStrings;
@@ -88,11 +94,12 @@
 
 @interface TBAlertController () <TBAlert>
 
-@property (nonatomic      ) id             inCaseOfManualDismissal;
-@property (nonatomic      ) TBAlertAction  *cancelAction;
-@property (nonatomic      ) NSMutableArray *buttons;
-@property (nonatomic      ) NSMutableArray *textFieldHandlers;
-@property (nonatomic, copy) void           (^completion)();
+@property (nonatomic      ) id                inCaseOfManualDismissal;
+@property (nonatomic      ) TBAlertAction     *cancelAction;
+@property (nonatomic      ) NSMutableArray    *buttons;
+@property (nonatomic      ) NSMutableArray    *textFieldHandlers;
+@property (nonatomic, weak) id<TBPresentable> currentPresentation;
+@property (nonatomic, copy) void              (^completion)();
 /** An array of \c NSStrings containing the text in each of the alert controller's text views *after* it has been dismissed.
  This array is passed to each \c TBAlertActionBlock, so it is only necessary to access this property if you for some reason need to keep it around for later use. */
 @property (nonatomic) NSMutableArray *textFieldInputStrings;
@@ -152,6 +159,24 @@
         [temp addObject:self.cancelAction];
     
     return [temp copy];
+}
+
+#pragma mark Updatable properties
+
+- (void)setTitle:(NSString *)title {
+    _title = title;
+    if (self.currentPresentation) {
+        self.currentPresentation.title = title;
+    }
+}
+
+- (void)setMessage:(NSString *)message {
+    _message = message;
+    if (self.currentPresentation) {
+        if ([self.currentPresentation respondsToSelector:@selector(setMessage:)]) {
+            self.currentPresentation.message = message;
+        }
+    }
 }
 
 #pragma mark Cancel button
@@ -332,14 +357,15 @@
         
         // Add actions to alert controller
         for (UIAlertAction *action in actions)
-             [alertController addAction:action];
-
+            [alertController addAction:action];
+        
         if( [UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad )
         {
             UIPopoverPresentationController *popPresentation = [alertController popoverPresentationController];
             popPresentation.sourceView = self.popoverSourceView ? self.popoverSourceView : viewController.view;
         }
-
+        
+        self.currentPresentation = alertController;
         [viewController presentViewController:alertController animated:animated completion:completion];
         
     }
@@ -380,6 +406,7 @@
     // Text views
     alert.alertViewStyle = self.alertViewStyle;
     
+    self.currentPresentation = (id)alert;
     [alert show];
     
     // Completion block
@@ -409,6 +436,7 @@
         actionSheet.destructiveButtonIndex = self.destructiveButtonIndex;
     
     // show
+    self.currentPresentation = (id)actionSheet;
     [actionSheet showInView:view];
     
     // Completion block
@@ -419,6 +447,8 @@
 #pragma mark Dismissing
 
 - (void)dismiss {
+    self.currentPresentation = nil;
+    
     if ([UIAlertController class]) {
         [self getTextFromTextFields:[(UIAlertController *)self.inCaseOfManualDismissal textFields]];
         [(UIAlertController *)self.inCaseOfManualDismissal dismissViewControllerAnimated:YES completion:nil];
@@ -429,6 +459,8 @@
 }
 
 - (void)dismissWithButtonIndex:(NSUInteger)index {
+    self.currentPresentation = nil;
+    
     // Button 0 with no actions defaults to [self dismiss]
     if (index == 0 && self.buttons.count == 0) {
         [self dismiss];
@@ -457,12 +489,14 @@
 
 - (void)dismissAnimated:(BOOL)animated completion:(TBVoidBlock)completion {
     NSAssert([UIAlertController class], @"This method is only available on iOS 8.");
+    self.currentPresentation = nil;
     [(UIAlertController *)self.inCaseOfManualDismissal dismissViewControllerAnimated:animated completion:completion];
 }
 
 #pragma mark Button actions (iOS 7)
 
 - (void)didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    self.currentPresentation = nil;
     TBAlertAction *button = [self buttonAtIndex:buttonIndex];
     [button perform:self.textFieldInputStrings.copy];
 }
@@ -487,12 +521,12 @@
     
     UIAlertAction *action = [UIAlertAction actionWithTitle:title style:style handler:^(UIAlertAction *action) {
         
-                                 if (controller.textFields.count > 0)
-                                     [self getTextFromTextFields:controller.textFields];
-                                 
-                                 if ([weakTarget respondsToSelector:selector])
-                                     func(weakTarget, selector);
-                             }];
+        if (controller.textFields.count > 0)
+            [self getTextFromTextFields:controller.textFields];
+        
+        if ([weakTarget respondsToSelector:selector])
+            func(weakTarget, selector);
+    }];
     
     return action;
 }
@@ -506,12 +540,12 @@
     
     UIAlertAction *action = [UIAlertAction actionWithTitle:title style:style handler:^(UIAlertAction *aciton) {
         
-                                 if (controller.textFields.count > 0)
-                                     [self getTextFromTextFields:controller.textFields];
-                                 
-                                 if ([weakTarget respondsToSelector:selector])
-                                     func(weakTarget, selector, weakObject);
-                             }];
+        if (controller.textFields.count > 0)
+            [self getTextFromTextFields:controller.textFields];
+        
+        if ([weakTarget respondsToSelector:selector])
+            func(weakTarget, selector, weakObject);
+    }];
     
     return action;
 }

@@ -365,7 +365,7 @@
             popPresentation.sourceView = self.popoverSourceView ? self.popoverSourceView : viewController.view;
         }
         
-        self.currentPresentation = alertController;
+        self.currentPresentation = (id)alertController;
         [viewController presentViewController:alertController animated:animated completion:completion];
         
     }

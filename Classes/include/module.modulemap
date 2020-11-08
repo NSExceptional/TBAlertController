@@ -1,0 +1,5 @@
+module TBAlertController [library] {
+  header "../TBAlertController.h"
+  header "../TBAlertAction.h"
+  export *
+}

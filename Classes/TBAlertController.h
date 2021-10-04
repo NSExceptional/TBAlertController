@@ -3,11 +3,9 @@
 //  TBAlertController
 //
 //  Created by Tanner on 9/22/14.
-//
+//  Copyright (c) 2021 Tanner. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-#import <Foundation/Foundation.h>
 #import "TBAlertAction.h"
 
 NS_ASSUME_NONNULL_BEGIN

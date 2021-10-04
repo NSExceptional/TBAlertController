@@ -1,9 +1,9 @@
 //
 //  TBAlertAction.m
-//  Alert Controller Test
+//  TBAlertController
 //
 //  Created by Tanner on 12/3/14.
-//  Copyright (c) 2014 Tanner. All rights reserved.
+//  Copyright (c) 2021 Tanner. All rights reserved.
 //
 
 #import "TBAlertAction.h"

@@ -28,7 +28,8 @@ typedef NS_ENUM(NSInteger, TBAlertControllerStyle) {
 /** The style of the alert controller, representing action sheet style or alert view style. */
 @property (nonatomic, readonly) TBAlertControllerStyle style;
 /** Setting this property has the same effect on iOS 7 and 8 as \c UIAlertViewStyle does on \c UIAlertView.
- Any additional text views added manually are added after the text views added by the specified style, even if you add them before setting this property. */
+ Any additional text views added manually are added after the text views added by the specified style,
+ even if you add them before setting this property. */
 @property (nonatomic          ) UIAlertViewStyle       alertViewStyle;
 /** The title of the alert controller. */
 @property (nonatomic, copy, nullable) NSString         *title;
@@ -39,9 +40,10 @@ typedef NS_ENUM(NSInteger, TBAlertControllerStyle) {
 /** Defaults to \c NSNotFound. Values greater than the number of buttons are allowed but will be ignored and discarded. */
 @property (nonatomic) NSInteger destructiveButtonIndex;
 /** @return The number of "other buttons" added + the cancel button, if you added one. */
-- (NSUInteger)numberOfButtons;
-/** @return An array of \c TBAlertActions representing all "other button" actions and the cancel button action, if you added one. Gauranteed to never be \c nil. */
-- (NSArray *)actions;
+@property (nonatomic, readonly) NSUInteger numberOfButtons;
+/** @return An array of \c TBAlertActions representing all "other button" actions and the cancel button action,
+ if you added one. Gauranteed to never be \c nil. */
+@property (nonatomic, readonly) NSArray<TBAlertAction *> *actions;
 
 ///--------------------
 /// @name Initializers

@@ -62,34 +62,41 @@
 }
 
 - (void)perform:(NSArray *)textFieldInputStrings {
-    if (!textFieldInputStrings)
+    if (!textFieldInputStrings) {
         textFieldInputStrings = @[];
+    }
     
     switch (self.style) {
         case TBAlertActionStyleNoAction:
             break;
-        case TBAlertActionStyleBlock: {
             
-            if (self.block)
+        case TBAlertActionStyleBlock: {
+            if (self.block) {
                 self.block(textFieldInputStrings);
+            }
+            
             break;
         }
-        case TBAlertActionStyleTarget: {
             
+        case TBAlertActionStyleTarget: {
             IMP imp = [self.target methodForSelector:self.action];
             void (*func)(id, SEL) = (void *)imp;
             
-            if ([self.target respondsToSelector:self.action])
+            if ([self.target respondsToSelector:self.action]) {
                 func(self.target, self.action);
+            }
+            
             break;
         }
-        case TBAlertActionStyleTargetObject: {
             
+        case TBAlertActionStyleTargetObject: {
             IMP imp = [self.target methodForSelector:self.action];
             void (*func)(id, SEL, id) = (void *)imp;
             
-            if ([self.target respondsToSelector:self.action])
+            if ([self.target respondsToSelector:self.action]) {
                 func(self.target, self.action, self.object);
+            }
+            
             break;
         }
     }

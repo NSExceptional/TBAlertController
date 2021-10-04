@@ -311,7 +311,11 @@
     if ([UIAlertController class]) {
         NSUInteger i = 0;
         NSMutableArray *actions = [NSMutableArray new];
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:self.title message:self.message preferredStyle:(UIAlertControllerStyle)self.style];
+        UIAlertController *alertController = [UIAlertController
+            alertControllerWithTitle:self.title
+            message:self.message
+            preferredStyle:(UIAlertControllerStyle)self.style
+        ];
         self.inCaseOfManualDismissal = alertController;
         
         // Add text fields
@@ -340,29 +344,47 @@
             case UIAlertViewStyleDefault:;
         }
         
-        for (id handler in self.textFieldHandlers)
+        for (id handler in self.textFieldHandlers) {
             [alertController addTextFieldWithConfigurationHandler:handler];
+        }
         
         
         // "Other button" actions
         for (TBAlertAction *button in self.buttons) {
-            UIAlertActionStyle style = (i == self.destructiveButtonIndex) ? UIAlertActionStyleDestructive : UIAlertActionStyleDefault;
+            UIAlertActionStyle style = (i == self.destructiveButtonIndex) ?
+                UIAlertActionStyleDestructive : UIAlertActionStyleDefault;
             [actions addObject:[self actionFromAlertAction:button withStyle:style controller:alertController]];
             i++;
         }
+        
         // Cancel action
         if (self.cancelAction) {
-            [actions addObject:[self actionFromAlertAction:self.cancelAction withStyle:UIAlertActionStyleCancel controller:alertController]];
+            [actions addObject:[self
+                actionFromAlertAction:self.cancelAction
+                withStyle:UIAlertActionStyleCancel
+                controller:alertController
+            ]];
         }
         
         // Add actions to alert controller
-        for (UIAlertAction *action in actions)
+        for (UIAlertAction *action in actions) {
             [alertController addAction:action];
+        }
         
-        if( [UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad )
-        {
-            UIPopoverPresentationController *popPresentation = [alertController popoverPresentationController];
-            popPresentation.sourceView = self.popoverSourceView ? self.popoverSourceView : viewController.view;
+        // Handle source view / bar item for action sheets
+        id viewOrBarItem = self.popoverSourceView;
+        
+        if ([viewOrBarItem isKindOfClass:[UIBarButtonItem class]]) {
+            alertController.popoverPresentationController.barButtonItem = viewOrBarItem;
+        } else if ([viewOrBarItem isKindOfClass:[UIView class]]) {
+            alertController.popoverPresentationController.sourceView = viewOrBarItem;
+            alertController.popoverPresentationController.sourceRect = [viewOrBarItem bounds];
+        } else if (viewOrBarItem) {
+            NSParameterAssert(
+                [viewOrBarItem isKindOfClass:[UIBarButtonItem class]] ||
+                [viewOrBarItem isKindOfClass:[UIView class]] ||
+                !viewOrBarItem
+            );
         }
         
         self.currentPresentation = (id)alertController;
@@ -374,22 +396,31 @@
         self.completion = [completion copy];
         
         // Alert view
-        if (self.style == TBAlertControllerStyleAlert)
+        if (self.style == TBAlertControllerStyleAlert) {
             [self show];
+        }
         
         // Action sheet
-        else if (self.style == TBAlertControllerStyleActionSheet)
+        else if (self.style == TBAlertControllerStyleActionSheet) {
             [self showInView:[viewController.view window]];
+        }
     }
 }
 
 #pragma mark Displaying (iOS 7)
 
 - (void)show {
-    NSAssert(self.style == TBAlertControllerStyleAlert,
-             @"You can only call \"show\" on an alert controller of style TBAlertControllerStyleAlert. \"show\" is also depricated on iOS 8.");
+    NSAssert(
+        self.style == TBAlertControllerStyleAlert,
+        @"You can only call \"show\" on an alert controller of style "
+        "TBAlertControllerStyleAlert. \"show\" is also depricated on iOS 8."
+    );
     
-    TBAlertView *alert = [[TBAlertView alloc] initWithTitle:self.title message:self.message controller:self];
+    TBAlertView *alert = [[TBAlertView alloc]
+        initWithTitle:self.title
+        message:self.message
+        controller:self
+    ];
     self.inCaseOfManualDismissal = alert;
     
     // Add buttons
@@ -397,6 +428,7 @@
         NSString *title = button.title;
         [alert addButtonWithTitle:title];
     }
+    
     // Add cancel button
     if (self.cancelAction) {
         [alert addButtonWithTitle:self.cancelAction.title];
@@ -415,10 +447,17 @@
 }
 
 - (void)showInView:(UIView *)view {
-    NSAssert(self.style == TBAlertControllerStyleActionSheet,
-             @"You can only call \"showInView:\" on an alert controller of style TBAlertControllerStyleActionSheet. \"showInView:\" is also depricated on iOS 8.");
+    NSAssert(
+        self.style == TBAlertControllerStyleActionSheet,
+        @"You can only call \"showInView:\" on an alert controller of style "
+        "TBAlertControllerStyleActionSheet. \"showInView:\" is also depricated on iOS 8."
+    );
     
-    TBActionSheet *actionSheet = [[TBActionSheet alloc] initWithTitle:self.title message:self.message controller:self];
+    TBActionSheet *actionSheet = [[TBActionSheet alloc]
+        initWithTitle:self.title
+        message:self.message
+        controller:self
+    ];
     self.inCaseOfManualDismissal = actionSheet;
     
     // Add buttons
@@ -432,16 +471,18 @@
         actionSheet.cancelButtonIndex = actionSheet.numberOfButtons-1;
     }
     // Destructive button index
-    if (self.destructiveButtonIndex > -1)
+    if (self.destructiveButtonIndex > -1) {
         actionSheet.destructiveButtonIndex = self.destructiveButtonIndex;
+    }
     
     // show
     self.currentPresentation = (id)actionSheet;
     [actionSheet showInView:view];
     
     // Completion block
-    if (self.completion)
+    if (self.completion) {
         self.completion();
+    }
 }
 
 #pragma mark Dismissing
@@ -470,17 +511,19 @@
     if ([UIAlertController class]) {
         TBAlertAction *action = self.actions[index];
         [self dismiss];
-        if (action.enabled)
-            [action perform:[self.textFieldInputStrings copy]];
+        if (action.enabled) {
+            [action perform:self.textFieldInputStrings.copy];
+        }
     }
     else {
+        id toDismiss = self.inCaseOfManualDismissal;
         switch (self.style) {
             case TBAlertControllerStyleActionSheet: {
-                [(UIActionSheet *)self.inCaseOfManualDismissal dismissWithClickedButtonIndex:index animated:YES];
+                [(UIActionSheet *)toDismiss dismissWithClickedButtonIndex:index animated:YES];
                 break;
             }
             case TBAlertControllerStyleAlert: {
-                [(UIAlertView *)self.inCaseOfManualDismissal dismissWithClickedButtonIndex:index animated:YES];
+                [(UIAlertView *)toDismiss dismissWithClickedButtonIndex:index animated:YES];
                 break;
             }
         }
@@ -490,7 +533,9 @@
 - (void)dismissAnimated:(BOOL)animated completion:(TBVoidBlock)completion {
     NSAssert([UIAlertController class], @"This method is only available on iOS 8.");
     self.currentPresentation = nil;
-    [(UIAlertController *)self.inCaseOfManualDismissal dismissViewControllerAnimated:animated completion:completion];
+    [(UIAlertController *)self.inCaseOfManualDismissal
+        dismissViewControllerAnimated:animated completion:completion
+    ];
 }
 
 #pragma mark Button actions (iOS 7)
@@ -520,12 +565,13 @@
     void (*func)(id, SEL) = (void *)imp;
     
     UIAlertAction *action = [UIAlertAction actionWithTitle:title style:style handler:^(UIAlertAction *action) {
-        
-        if (controller.textFields.count > 0)
+        if (controller.textFields.count > 0) {
             [self getTextFromTextFields:controller.textFields];
+        }
         
-        if ([weakTarget respondsToSelector:selector])
+        if ([weakTarget respondsToSelector:selector]) {
             func(weakTarget, selector);
+        }
     }];
     
     return action;
@@ -539,12 +585,13 @@
     void (*func)(id, SEL, id) = (void *)imp;
     
     UIAlertAction *action = [UIAlertAction actionWithTitle:title style:style handler:^(UIAlertAction *aciton) {
-        
-        if (controller.textFields.count > 0)
+        if (controller.textFields.count > 0) {
             [self getTextFromTextFields:controller.textFields];
+        }
         
-        if ([weakTarget respondsToSelector:selector])
+        if ([weakTarget respondsToSelector:selector]) {
             func(weakTarget, selector, weakObject);
+        }
     }];
     
     return action;
@@ -560,30 +607,32 @@
                 [self getTextFromTextFields:controller.textFields];
                 [button perform:[self.textFieldInputStrings copy]];
             }];
-        }
             break;
+        }
             
         case TBAlertActionStyleTargetObject:
         case TBAlertActionStyleTarget: {
             
             // With object
-            if (button.object)
+            if (button.object) {
                 action = [self actionWithTitle:button.title
                                          style:style
                                         target:button.target
                                       selector:button.action
                                         object:button.object
                                     controller:controller];
+            }
             // Without object
-            else
+            else {
                 action = [self actionWithTitle:button.title
                                          style:style
                                         target:button.target
                                       selector:button.action
                                     controller:controller];
+            }
             
-        }
             break;
+        }
     }
     
     action.enabled = button.enabled;

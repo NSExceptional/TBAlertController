@@ -7,6 +7,7 @@
 //
 
 #import "TBAlertAction.h"
+#import "TBAlertController+Builder.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

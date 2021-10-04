@@ -61,6 +61,9 @@ typedef NS_ENUM(NSInteger, TBAlertControllerStyle) {
  @return A \c TBAlertController with an "OK" button to dismiss it. */
 + (instancetype)simpleOKAlertWithTitle:(nullable NSString *)title message:(nullable NSString *)message;
 
++ (instancetype)alertControllerWithTitle:(nullable NSString *)title message:(nullable NSString *)message
+                          preferredStyle:(UIAlertControllerStyle)preferredStyle;
+
 /** Initializer that creates a \c TBAlertController in the specified style with no actions, title, or message. */
 - (id)initWithStyle:(TBAlertControllerStyle)style;
 /** Initializer that creates a \c TBAlertController in the specified style with the given title and message. */
@@ -110,6 +113,9 @@ typedef NS_ENUM(NSInteger, TBAlertControllerStyle) {
 ///---------------------
 
 #pragma mark Other buttons
+
+/** Same as \c addOtherButton: but for API compatibility with \c UIAlertController */
+- (void)addAction:(TBAlertAction *)button;
 
 /** Adds a button via a \c TBAlertAction. */
 - (void)addOtherButton:(TBAlertAction *)button;

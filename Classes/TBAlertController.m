@@ -122,6 +122,16 @@
     return alert;
 }
 
++ (instancetype)alertControllerWithTitle:(NSString *)title message:(NSString *)message
+                          preferredStyle:(UIAlertControllerStyle)preferredStyle {
+    switch (preferredStyle) {
+        case UIAlertControllerStyleAlert:
+            return [self alertViewWithTitle:title message:message];
+        case UIAlertControllerStyleActionSheet:
+            return [self actionSheetWithTitle:title message:message];
+    }
+}
+
 - (instancetype)initWithStyle:(TBAlertControllerStyle)style {
     self = [super init];
     if (self) {
@@ -222,6 +232,10 @@
 }
 
 #pragma mark Other buttons
+
+- (void)addAction:(TBAlertAction *)button {
+    [self addOtherButton:button];
+}
 
 - (void)addOtherButton:(TBAlertAction *)button {
     [self.buttons addObject:button];

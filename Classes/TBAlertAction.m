@@ -24,10 +24,9 @@
 }
 
 - (id)initWithTitle:(NSString *)title block:(TBAlertActionBlock)block {
-    NSParameterAssert(block);
     self = [self initWithTitle:title];
     if (self) {
-        _block = block;
+        _block = block ?: ^(id _) { };
         _style = TBAlertActionStyleBlock;
     }
     

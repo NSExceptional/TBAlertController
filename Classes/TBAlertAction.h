@@ -63,7 +63,7 @@ typedef NS_ENUM(NSInteger, TBAlertActionStyle) {
  
  @param title The title of the button.
  @param block An optional block to execute when the action is triggered. */
-- (id)initWithTitle:(NSString *)title block:(TBAlertActionBlock)block;
+- (id)initWithTitle:(NSString *)title block:(nullable TBAlertActionBlock)block;
 /** Initializes a \c TBAlertAction with the given title and a target-selector style action to execute when triggered.
  
  @param title The button title

@@ -11,7 +11,7 @@ TBAlertController
 
 Installation:
 =============
-Cocoapods
+CocoaPods
 - Add `pod 'TBAlertController' to your podfile, then run `pod install`.
 
 Manual installation

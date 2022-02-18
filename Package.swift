@@ -4,7 +4,7 @@ import PackageDescription
 let package = Package(
     name: "TBAlertController",
     platforms: [
-        .iOS(.v8)
+        .iOS(.v9)
     ],
     products: [
         .library(name: "TBAlertController", targets: ["TBAlertController"])

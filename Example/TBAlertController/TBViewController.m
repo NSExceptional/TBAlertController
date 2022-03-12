@@ -7,7 +7,6 @@
 //
 
 #import "TBViewController.h"
-#import "TBAlertController.h"
 
 @interface MasterViewController ()
 @property TBAlertControllerStyle style;

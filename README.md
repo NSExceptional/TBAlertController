@@ -1,5 +1,4 @@
-TBAlertController
-=================
+# TBAlertController
 
 [![Issues](https://img.shields.io/github/issues-raw/ThePantsThief/TBAlertController.svg?style=flat)](https://github.com/ThePantsThief/TBAlertController/issues)
 [![Stars](https://img.shields.io/github/stars/ThePantsThief/TBAlertController.svg?style=flat)](https://github.com/ThePantsThief/TBAlertController/stargazers)
@@ -7,34 +6,22 @@ TBAlertController
 [![License](https://img.shields.io/cocoapods/l/TBAlertController.svg?style=flat)](http://cocoadocs.org/docsets/TBAlertController)
 [![Platform](https://img.shields.io/cocoapods/p/TBAlertController.svg?style=flat)](http://cocoadocs.org/docsets/TBAlertController)
 
-`UIAlertController`, `UIAlertView`, and `UIActionSheet` unified for developers who want to support iOS 7, 8, and 9.
+`UIAlertController`, simplified.
 
-Installation:
-=============
-Cocoapods
-- Add `pod 'TBAlertController' to your podfile, then run `pod install`.
+# Installation:
 
-Manual installation
-- Clone this repo
-- Add `TBAlertController.h`, `TBAlertController.m`, `TBAlertAction.h`, and `TBAlertAction.m` to your project
-- Import `TBAlertController.h`, and optionally `TBAlertAction.h` if you plan to use it.
+### SPM
 
-About
-=====
-`TBAlertController` tries to be as much of a drop-in replacement for the iOS 7 classes as possible, and adds a simpler interface for iOS 8 by allowing you to directly add buttons instead of first creating action objects. This feature is coming soon, however, to remain consitent with `UIAlertController`'s interface.
+You _must_ use the SPM branch to access the Swift-only version:
 
-The only major difference for iOS 7 is that `TBAlertController` does away with delegates in favor of block and target-selector style actions. Delegate support will not be added, since this project is directed at developers who want to minimize code involving action sheets and alert views on iOS 7 and 8. It is possible to use the same code for both platforms; `TBAlertController` takes care of the rest for you.
+```swift
+.package(url: "https://github.com/NSExceptional/TBAlertController.git", .branch("swift"))
+```
 
-Features
-========
-- No more delegates! And no more iOS 7 / 8 / 9 conditional code. One alert to rule them all...
-- Allows for reusable methods thanks to the target-selector style button actions, which usually fit on a single line.
-- Tries to be as much of a drop-in replacement for the iOS 8 API as possible. The method signatures are different but work as expected.
-- Supports adding text fields using `UIAlertViewStyle` for iOS 7 and 8, and `addTextFieldWithConfigurationHandler:` for iOS 8.
-- Add buttons directly using any of the `addOtherButtonWithTitle...` methods, or by creating a `TBAlertAction` and adding that. Adding actions directly allows for slimmer code, while creating and adding `TBAlertAction`s works similar to how `UIAlertController` adds buttons.
+# Features
+- Uses the "builder" pattern for creating complex alerts concisely
 
-Examples
-========
+# Examples
 ``` obj-c
 
 TBAlertController *alert = [[TBAlertController alloc] initWithStyle:TBAlertControllerStyleActionSheet];
@@ -80,14 +67,12 @@ TBAlertController *alert = [[TBAlertController alloc] initWithStyle:TBAlertContr
 // iOS 7 and 8
 alert.alertViewStyle = UIAlertViewStylePlainTextInput;
 ```
-Gotchas
-=======
+# Gotchas
 The following will throw exceptions:
 - Calling any method only available in iOS 8, indicated by `NS_AVAILABLE_IOS(8_0)`, including `addTextFieldWithConfigurationHandler`.
 - Adding a text field when using `TBAlertControllerStyleActionSheet` and `setButtonEnabled:atIndex:`.
 - Setting `destructiveButtonIndex` when using the alert view style on iOS 7 (since iOS 7 doesn't support this).
 - Passing `nil` for any of the folliwing: title, target, action, or a block for `buttonAction:`. You may pass `nil` to the `object` parameter of `addOtherButtonWithTitle:target:action:withObject:`, as it will call just call the parent method which takes no `object` parameter.
 
-License
-=======
+# License
 MIT license. See LICENSE file for more details.

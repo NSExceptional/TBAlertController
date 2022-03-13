@@ -8,19 +8,19 @@
 
 import UIKit
 
-typealias TBAlertReveal = () -> Void
-typealias TBAlertBuilder = (TBAlert) -> Void
-typealias TBAlertStringProperty = (String?) -> TBAlert
-typealias TBAlertStringArg = (String?) -> TBAlert
-typealias TBAlertTextField = (((UITextField) -> Void)) -> TBAlert
-typealias TBAlertAddAction = (String) -> TBAlertActionBuilder
-typealias TBAlertActionStringProperty = (String?) -> TBAlertActionBuilder
-typealias TBAlertActionProperty = () -> TBAlertActionBuilder
-typealias TBAlertActionBOOLProperty = (Bool) -> TBAlertActionBuilder
-typealias TBAlertActionHandler = ((([String]) -> Void)) -> TBAlertActionBuilder
+public typealias TBAlertReveal = () -> Void
+public typealias TBAlertBuilder = (TBAlert) -> Void
+public typealias TBAlertStringProperty = (String?) -> TBAlert
+public typealias TBAlertStringArg = (String?) -> TBAlert
+public typealias TBAlertTextField = (((UITextField) -> Void)) -> TBAlert
+public typealias TBAlertAddAction = (String) -> TBAlertActionBuilder
+public typealias TBAlertActionStringProperty = (String?) -> TBAlertActionBuilder
+public typealias TBAlertActionProperty = () -> TBAlertActionBuilder
+public typealias TBAlertActionBOOLProperty = (Bool) -> TBAlertActionBuilder
+public typealias TBAlertActionHandler = ((([String]) -> Void)) -> TBAlertActionBuilder
 
 @objcMembers
-class TBAlert: NSObject {
+public class TBAlert: NSObject {
     
     private var controller: TBAlertController
     private var actions: [TBAlertActionBuilder] = []
@@ -28,7 +28,7 @@ class TBAlert: NSObject {
     /// Set the alert's title.
     ///
     /// Call in succession to append strings to the title.
-    func title(_ title: String?) -> Self {
+    public func title(_ title: String?) -> Self {
         guard let title = title else { return self }
         
         self.controller.title += title
@@ -38,7 +38,7 @@ class TBAlert: NSObject {
     /// Set the alert's message.
     ///
     /// Call in succession to append strings to the message.
-    func message(_ message: String?) -> Self {
+    public func message(_ message: String?) -> Self {
         guard let message = message else { return self }
         
         self.controller.message += message
@@ -46,14 +46,14 @@ class TBAlert: NSObject {
     }
     
     /// Add a button with a given title with the default style and no action.
-    func button(_ title: String?) -> TBAlertActionBuilder {
+    public func button(_ title: String?) -> TBAlertActionBuilder {
         let action = TBAlertActionBuilder(self.controller).title(title)
         actions.append(action)
         return action
     }
     
     /// Add a text field with the given (optional) placeholder text.
-    func textField(_ placeholder: String?) -> Self {
+    public func textField(_ placeholder: String?) -> Self {
         self.controller.addTextField(withConfigurationHandler: { textField in
             textField.placeholder = placeholder
         })
@@ -65,14 +65,14 @@ class TBAlert: NSObject {
     ///
     /// Use this if you need to more than set the placeholder, such as
     /// supply a delegate, make it secure entry, or change other attributes.
-    func configuredTextField(_ configurationHandler: @escaping (UITextField) -> Void) -> Self {
+    public func configuredTextField(_ configurationHandler: @escaping (UITextField) -> Void) -> Self {
         self.controller.addTextField(withConfigurationHandler: configurationHandler)
         return self
     }
     
 
     /// Shows a simple alert with one button which says "Dismiss"
-    class func show(_ title: String, message: String, from viewController: UIViewController) {
+    public class func show(_ title: String, message: String, from viewController: UIViewController) {
         self.make({ make in
             make.title(title).message(message).button("Dismiss").cancelStyle()
         }, showFrom: viewController)
@@ -85,7 +85,7 @@ class TBAlert: NSObject {
         super.init()
     }
 
-    class func make(_ block: TBAlertBuilder, with style: UIAlertController.Style) -> TBAlertController {
+    public class func make(_ block: TBAlertBuilder, with style: UIAlertController.Style) -> TBAlertController {
         let controller = TBAlertController(
             title: nil,
             message: nil,
@@ -119,7 +119,7 @@ class TBAlert: NSObject {
         return alert.controller
     }
 
-    class func make(
+    public class func make(
         _ block: TBAlertBuilder,
         style: UIAlertController.Style,
         showFrom viewController: UIViewController,
@@ -131,16 +131,16 @@ class TBAlert: NSObject {
     }
 
     /// Construct and display an alert
-    class func make(_ block: TBAlertBuilder, showFrom controller: UIViewController) {
+    public class func make(_ block: TBAlertBuilder, showFrom controller: UIViewController) {
         self.make(block, style: .alert, showFrom: controller)
     }
 
-    class func makeSheet(_ block: TBAlertBuilder, showFrom controller: UIViewController) {
+    public class func makeSheet(_ block: TBAlertBuilder, showFrom controller: UIViewController) {
         self.make(block, style: .actionSheet, showFrom: controller)
     }
 
     /// Construct and display an action sheet-style alert
-    class func makeSheet(
+    public class func makeSheet(
         _ block: TBAlertBuilder,
         showFrom controller: UIViewController,
         source: TBAlertController.PopoverSource = .none
@@ -149,18 +149,18 @@ class TBAlert: NSObject {
     }
 
     /// Construct an alert
-    class func make(_ block: TBAlertBuilder) -> TBAlertController {
+    public class func make(_ block: TBAlertBuilder) -> TBAlertController {
         return self.make(block, with: .alert)
     }
 
     /// Construct an action sheet-style alert
-    class func makeSheet(_ block: TBAlertBuilder) -> TBAlertController {
+    public class func makeSheet(_ block: TBAlertBuilder) -> TBAlertController {
         return self.make(block, with: .actionSheet)
     }
 }
 
 @objcMembers
-class TBAlertActionBuilder: NSObject {
+public class TBAlertActionBuilder: NSObject {
     fileprivate var controller: TBAlertController
     fileprivate var title: String = ""
     fileprivate var style: (UIAlertAction.Style) = .default
@@ -172,7 +172,7 @@ class TBAlertActionBuilder: NSObject {
         assert(_action == nil, "Cannot mutate action after retreiving underlying UIAlertAction")
     }
     
-    init(_ controller: TBAlertController) {
+    public init(_ controller: TBAlertController) {
         self.controller = controller
         super.init()
     }
@@ -181,7 +181,7 @@ class TBAlertActionBuilder: NSObject {
     /// the encompassing alert is being displayed. For example, you may want to
     /// enable or disable a button based on the input of some text fields in the alert.
     /// Do not call this more than once per instance.
-    lazy private(set) var action: TBAlertAction = {
+    public lazy private(set) var action: TBAlertAction = {
         let a = TBAlertAction(
             title: self.title,
             block: self.handler
@@ -196,7 +196,7 @@ class TBAlertActionBuilder: NSObject {
     ///
     /// Call in succession to append strings to the title.
     @discardableResult
-    func title(_ title: String?) -> Self {
+    public func title(_ title: String?) -> Self {
         MutationAssertion()
         self.title += (title ?? "")
         return self
@@ -204,7 +204,7 @@ class TBAlertActionBuilder: NSObject {
     
     /// Make the action destructive. It appears with red text.
     @discardableResult
-    func destructiveStyle() -> Self {
+    public func destructiveStyle() -> Self {
         MutationAssertion()
         self.style = .destructive
         return self
@@ -212,7 +212,7 @@ class TBAlertActionBuilder: NSObject {
     
     /// Make the action cancel-style. It appears with a bolder font.
     @discardableResult
-    func cancelStyle() -> Self {
+    public func cancelStyle() -> Self {
         MutationAssertion()
         self.style = .cancel
         return self
@@ -220,7 +220,7 @@ class TBAlertActionBuilder: NSObject {
     
     /// Enable or disable the action. Enabled by default.
     @discardableResult
-    func enabled(_ enabled: Bool) -> Self {
+    public func enabled(_ enabled: Bool) -> Self {
         MutationAssertion()
         self.disable = !enabled
         return self
@@ -228,7 +228,7 @@ class TBAlertActionBuilder: NSObject {
     
     /// Give the button an action. The action takes an array of text field strings.
     @discardableResult
-    func handler(_ handler: @escaping ([String]) -> Void) -> Self {
+    public func handler(_ handler: @escaping ([String]) -> Void) -> Self {
         MutationAssertion()
         self.handler = handler
         return self

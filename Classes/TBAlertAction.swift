@@ -15,7 +15,7 @@ import UIKit
 /// A void returning block that takes an array of strings representing
 /// the text in each of the text fields of the associated `TBAlertController`.
 /// If there were no text fields, or if the alert controller style was
-/// `TBAlertControllerStyleActionSheet` the array is empty and can be ignored.
+/// `TBAlertController.Style.actionSheet` the array is empty and can be ignored.
 public typealias TBAlertActionBlock = ([String]) -> Void
 
 /// All possible action styles (no action, block, target-selector,

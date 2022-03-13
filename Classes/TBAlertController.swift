@@ -8,24 +8,8 @@
 
 import UIKit
 
-public enum TBAlertControllerStyle: Int {
-    case actionSheet
-    case alert
-    
-    public init(style: UIAlertController.Style) {
-        switch style {
-            case .actionSheet:
-                self = .actionSheet
-            case .alert:
-                self = .alert
-            @unknown default:
-                self = .alert
-        }
-    }
-}
-
 public extension UIAlertController.Style {
-    init(style: TBAlertControllerStyle) {
+    init(style: TBAlertController.Style) {
         switch style {
             case .actionSheet:
                 self = .actionSheet
@@ -44,6 +28,22 @@ public class TBAlertController: NSObject {
         case barItem(UIBarButtonItem)
     }
     
+    public enum Style: Int {
+        case actionSheet
+        case alert
+        
+        public init(style: UIAlertController.Style) {
+            switch style {
+                case .actionSheet:
+                    self = .actionSheet
+                case .alert:
+                    self = .alert
+                @unknown default:
+                    self = .alert
+            }
+        }
+    }
+    
     private var inCaseOfManualDismissal: UIAlertController?
     private var cancelAction: TBAlertAction?
     private var buttons: [TBAlertAction] = []
@@ -58,7 +58,7 @@ public class TBAlertController: NSObject {
     // MARK: Properties
 
     /// The style of the alert controller, representing action sheet style or alert view style.
-    private(set) var style: TBAlertControllerStyle = .actionSheet
+    private(set) var style: Style = .actionSheet
     
     /// Setting this property has the same effect on iOS 7 and 8 as `UIAlertViewStyle` does on `UIAlertView`.
     /// Any additional text views added manually are added after the text views added by the specified style,
@@ -115,13 +115,13 @@ public class TBAlertController: NSObject {
 
     // MARK: Initializers
 
-    /// A convenience method for `initWithTitle:message:style:` where `style` is `TBAlertControllerStyleAlert`.
+    /// A convenience method for `initWithTitle:message:style:` where `style` is `TBAlertController.Style.alert`.
     /// - Returns: A `TBAlertController` with no actions.
     public class func alertView(withTitle title: String, message: String) -> TBAlertController {
         return TBAlertController(title: title, message: message, style: .alert)
     }
 
-    /// A convenience method for `initWithTitle:message:style:` where `style` is `TBAlertControllerStyleActionSheet`.
+    /// A convenience method for `initWithTitle:message:style:` where `style` is `TBAlertController.Style.actionSheet`.
     /// - Returns: A `TBAlertController` with no actions.
     public class func actionSheet(withTitle title: String, message: String) -> TBAlertController {
         return TBAlertController(title: title, message: message, style: .actionSheet)
@@ -136,13 +136,13 @@ public class TBAlertController: NSObject {
     }
 
     /// Initializer that creates a `TBAlertController` in the specified style with no actions, title, or message.
-    public init(style: TBAlertControllerStyle = .alert) {
+    public init(style: Style = .alert) {
         super.init()
         self.style = style
     }
 
     /// Initializer that creates a `TBAlertController` in the specified style with the given title and message.
-    public convenience init(title: String?, message: String?, style: TBAlertControllerStyle = .alert) {
+    public convenience init(title: String?, message: String?, style: Style = .alert) {
         self.init(style: style)
         self.title = title ?? ""
         self.message = message ?? ""

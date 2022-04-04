@@ -293,10 +293,10 @@ public class TBAlertController: NSObject {
                 action = UIAlertAction(title: button.title, style: button.style)
             case .block:
                 action = UIAlertAction(title: button.title, style: button.style,
-                    handler: { [weak self, weak controller] _ in
-                        guard let self = self else { return }
-                        self.collectText(from: controller?.textFields ?? [])
-                        button.perform(self.textFieldInputStrings)
+                    handler: { [weak controller] _ in
+                        guard let controller = controller else { return }
+                        let strings = controller.textFields?.map { $0.text ?? "" } ?? []
+                        button.perform(strings)
                     }
                 )
         }

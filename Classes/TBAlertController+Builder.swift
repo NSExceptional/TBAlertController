@@ -28,6 +28,7 @@ public class TBAlert: NSObject {
     /// Set the alert's title.
     ///
     /// Call in succession to append strings to the title.
+    @discardableResult
     public func title(_ title: String?) -> Self {
         guard let title = title else { return self }
         
@@ -38,6 +39,7 @@ public class TBAlert: NSObject {
     /// Set the alert's message.
     ///
     /// Call in succession to append strings to the message.
+    @discardableResult
     public func message(_ message: String?) -> Self {
         guard let message = message else { return self }
         
@@ -46,6 +48,7 @@ public class TBAlert: NSObject {
     }
     
     /// Add a button with a given title with the default style and no action.
+    @discardableResult
     public func button(_ title: String?) -> TBAlertActionBuilder {
         let action = TBAlertActionBuilder(self.controller).title(title)
         actions.append(action)
@@ -53,7 +56,8 @@ public class TBAlert: NSObject {
     }
     
     /// Add a text field with the given (optional) placeholder text.
-    public func textField(_ placeholder: String?) -> Self {
+    @discardableResult
+    public func textField(_ placeholder: String? = nil) -> Self {
         self.controller.addTextField(withConfigurationHandler: { textField in
             textField.placeholder = placeholder
         })
@@ -65,6 +69,7 @@ public class TBAlert: NSObject {
     ///
     /// Use this if you need to more than set the placeholder, such as
     /// supply a delegate, make it secure entry, or change other attributes.
+    @discardableResult
     public func configuredTextField(_ configurationHandler: @escaping (UITextField) -> Void) -> Self {
         self.controller.addTextField(withConfigurationHandler: configurationHandler)
         return self
@@ -72,7 +77,7 @@ public class TBAlert: NSObject {
     
 
     /// Shows a simple alert with one button which says "Dismiss"
-    public class func show(_ title: String, message: String, from viewController: UIViewController) {
+    public class func show(_ title: String, message: String? = nil, from viewController: UIViewController) {
         self.make({ make in
             make.title(title).message(message).button("Dismiss").cancelStyle()
         }, showFrom: viewController)

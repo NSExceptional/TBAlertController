@@ -88,6 +88,7 @@ public class TBAlertController: NSObject {
     
     /// The array of `TBAlertActions` that comprise the alert / sheet.
     public var buttons: [TBAlertAction] = []
+    public var preferredAction: TBAlertAction? = nil
 
 
     // MARK: Initializers
@@ -234,6 +235,11 @@ public class TBAlertController: NSObject {
         // Add actions to alert controller
         for action in actions {
             alertController.addAction(action)
+        }
+        
+        // Add preferred action
+        if let preferred = self.preferredAction, let idx = self.buttons.firstIndex(of: preferred) {
+            alertController.preferredAction = actions[idx]
         }
 
         // Handle source view / bar item for action sheets

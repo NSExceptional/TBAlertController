@@ -107,6 +107,11 @@ public class TBAlert: NSObject {
         for builder in alert.actions {
             controller.addAction(builder.action)
         }
+        
+        // Set preferred action
+        if let preferred = alert.actions.lastIndex(where: \.isPreferred) {
+            controller.preferredAction = controller.buttons[preferred]
+        }
 
         return alert.controller
     }
@@ -156,6 +161,7 @@ public class TBAlertActionBuilder: NSObject {
     fileprivate var controller: TBAlertController
     fileprivate var title: String = ""
     fileprivate var style: UIAlertAction.Style = .default
+    fileprivate var isPreferred: Bool = false
     fileprivate var disable: Bool = false
     fileprivate var handler: TBAlertActionBlock? = nil
     private var _action: TBAlertAction? = nil
@@ -192,6 +198,14 @@ public class TBAlertActionBuilder: NSObject {
     public func title(_ title: String?) -> Self {
         MutationAssertion()
         self.title += (title ?? "")
+        return self
+    }
+
+    /// Make the action destructive. It appears with red text.
+    @discardableResult
+    public func preferred() -> Self {
+        MutationAssertion()
+        self.isPreferred = true
         return self
     }
     

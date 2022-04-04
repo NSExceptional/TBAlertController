@@ -20,7 +20,7 @@ public typealias TBAlertActionBlock = ([String]) -> Void
 
 /// All possible action styles (no action, block, target-selector,
 /// and single-parameter target-selector).
-public enum TBAlertActionStyle: Int {
+public enum TBAlertActionKind: Int {
     case noAction = 0
     case block
 }
@@ -35,12 +35,14 @@ public class TBAlertAction: NSObject {
     // MARK: Properties
 
 
-    /// The style of the action.
-    private(set) var style: TBAlertActionStyle = .noAction
+    /// The kind of the action.
+    private(set) var kind: TBAlertActionKind = .noAction
     /// The block to be executed when the action is triggered, if it's style is `.block`.
     private(set) var block: TBAlertActionBlock?
     /// Whether or not the action is enabled.
     public var enabled: Bool = true
+    /// The style of the action.
+    public var style: UIAlertAction.Style = .default
     /// The title of the action, displayed on the button representing it.
     private(set) var title: String = ""
     /// The target of the `action` property.
@@ -57,23 +59,22 @@ public class TBAlertAction: NSObject {
 
 
     /// Initializes a `TBAlertAction` with the given title.
-    public init(title: String) {
+    public init(title: String, style: UIAlertAction.Style = .default) {
         super.init()
         self.title = title
-        self.enabled = true
-        self.style = .noAction
+        self.style = style
     }
 
     /// Initializes a `TBAlertAction` with the given title and a block to execute when triggered.
     /// - Parameters:
     ///   - title: The title of the button.
     ///   - block: An optional block to execute when the action is triggered.
-    public convenience init(title: String, block: TBAlertActionBlock?) {
-        self.init(title: title)
+    public convenience init(title: String, style: UIAlertAction.Style = .default, block: TBAlertActionBlock?) {
+        self.init(title: title, style: style)
         
         if let block = block {
             self.block = block
-            self.style = .block
+            self.kind = .block
         }
     }
 
@@ -85,7 +86,7 @@ public class TBAlertAction: NSObject {
     /// - Parameter textFieldInputStrings: An optional array of `NSStrings`. `TBAlertController` uses this method when a button is tapped on an alert view with text fields. You may pass `nil` to this parameter.
     /// - warning: Behavior is undefined if `textFieldInputStrings` contains objects other than `NSStrings`.
     public func perform(_ textFieldInputStrings: [String] = []) {
-        switch style {
+        switch self.kind {
             case .noAction:
                 break
             case .block:

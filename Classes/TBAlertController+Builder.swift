@@ -58,9 +58,9 @@ public class TBAlert: NSObject {
     /// Add a text field with the given (optional) placeholder text.
     @discardableResult
     public func textField(_ placeholder: String? = nil) -> Self {
-        self.controller.addTextField(withConfigurationHandler: { textField in
+        self.controller.addTextField { textField in
             textField.placeholder = placeholder
-        })
+        }
 
         return self
     }
@@ -71,7 +71,7 @@ public class TBAlert: NSObject {
     /// supply a delegate, make it secure entry, or change other attributes.
     @discardableResult
     public func configuredTextField(_ configurationHandler: @escaping (UITextField) -> Void) -> Self {
-        self.controller.addTextField(withConfigurationHandler: configurationHandler)
+        self.controller.addTextField(with: configurationHandler)
         return self
     }
     
@@ -105,20 +105,7 @@ public class TBAlert: NSObject {
 
         // Add actions
         for builder in alert.actions {
-            let action = builder.action
-            switch builder.style {
-            case .default:
-                controller.addAction(action)
-            case .cancel:
-                controller.setCancelButton(action: action)
-            case .destructive:
-                controller.addAction(action)
-                
-                // I don't like this... But it's for API compat, so
-                controller.destructiveButtonIndex = controller.actions.firstIndex(of: action) ?? NSNotFound
-            default:
-                break
-            }
+            controller.addAction(builder.action)
         }
 
         return alert.controller

@@ -45,8 +45,6 @@ public class TBAlertController: NSObject {
     }
     
     private var inCaseOfManualDismissal: UIAlertController?
-    private var cancelAction: TBAlertAction?
-    private var buttons: [TBAlertAction] = []
     private var textFieldHandlers: [(UITextField) -> Void] = []
     private weak var currentPresentation: UIAlertController?
     private var completion: (() -> Void)?
@@ -88,29 +86,8 @@ public class TBAlertController: NSObject {
     /// The reference view for UIPopoverViewController on iPad
     public var popoverSource: PopoverSource = .none
     
-    /// Defaults to `NSNotFound`. Values greater than the number of buttons are allowed but will be ignored and discarded.
-    public var destructiveButtonIndex: Int = NSNotFound
-    
-    /// - Returns: The number of "other buttons" added + the cancel button, if you added one.
-    public var numberOfButtons: Int {
-        if self.cancelAction != nil {
-            return self.buttons.count + 1
-        }
-
-        return self.buttons.count
-    }
-    
-    /// - Returns: An array of `TBAlertActions` representing all "other button" actions and the cancel button action,
-    /// if you added one. Gauranteed to never be `nil`.
-    public var actions: [TBAlertAction] {
-        if let cancelAction = self.cancelAction {
-            var temp: [TBAlertAction] = self.buttons
-            temp.append(cancelAction)
-            return temp 
-        }
-        
-        return self.buttons;
-    }
+    /// The array of `TBAlertActions` that comprise the alert / sheet.
+    public var buttons: [TBAlertAction] = []
 
 
     // MARK: Initializers
@@ -148,37 +125,6 @@ public class TBAlertController: NSObject {
         self.message = message ?? ""
     }
 
-    // MARK: Cancel button
-
-    /// Adds a cancel button via a `TBAlertAction`.
-    public func setCancelButton(action: TBAlertAction) {
-        self.cancelAction = action
-    }
-
-    /// Adds an actionless cancel button with the given title.
-    public func setCancelButton(title: String) {
-        self.cancelAction = TBAlertAction(title: title)
-    }
-
-    /// Adds a cancel button with a block to be executed when triggered.
-    /// - Parameters:
-    ///   - title: The button title
-    ///   - buttonBlock: The `TBAlertActionBlock` to be executed when the button is triggered.
-    public func setCancelButtonWithTitle(_ title: String, buttonAction buttonBlock: @escaping TBAlertActionBlock) {
-        self.cancelAction = TBAlertAction(title: title, block: buttonBlock)
-    }
-
-    /// - warning: This is a feature of `UIAlertAction` and is only available on iOS 8.
-    public func setCancelButtonEnabled(_ enabled: Bool) {
-        assert(self.cancelAction != nil, "Cancel button was never set, cannot enable or disable it.")
-        self.cancelAction?.enabled = enabled
-    }
-
-    /// Removes the cancel button.
-    public func removeCancelButton() {
-        self.cancelAction = nil
-    }
-
 
     // MARK: Other buttons
 
@@ -193,10 +139,8 @@ public class TBAlertController: NSObject {
     }
 
     /// Adds an actionless button with the given title.
-    public func addOtherButton(_ title: String) {
-        assert(title != "", "Invalid parameter not satisfying: title != \"\"")
-
-        let button = TBAlertAction(title: title)
+    public func addOtherButton(_ title: String, style: UIAlertAction.Style = .default) {
+        let button = TBAlertAction(title: title, style: style)
         self.buttons.append(button)
     }
 
@@ -204,40 +148,16 @@ public class TBAlertController: NSObject {
     /// - Parameters:
     ///   - title: The button title.
     ///   - buttonBlock: The `TBAlertActionBlock` to be executed when the button is triggered.
-    public func addOtherButton(with title: String, action buttonBlock: @escaping (_ textFieldStrings: [String]) -> Void) {
-        assert(title != "", "Invalid parameter not satisfying: title != ",file: "")
-        
-        self.buttons.append(.init(title: title, block: buttonBlock))
+    public func addOtherButton(_ title: String, style: UIAlertAction.Style = .default,
+                               action: @escaping (_ textFieldStrings: [String]) -> Void) {
+        self.buttons.append(.init(title: title, block: action))
     }
 
-    /// - note: You can also use this to enable or disable the cancel button if you have one set.
-    public func setButtonEnabled(_ enabled: Bool, at buttonIndex: Int) {
-        // Cancel button
-        if buttonIndex == self.buttons.count {
-            assert(self.cancelAction != nil, "Invalid button index; out of bounds.")
-            self.cancelAction!.enabled = enabled
-        } else {
-            self.buttons[buttonIndex].enabled = enabled
-        }
-    }
-
-    /// Removes a button.
-    /// - note: You can also use this to remove the cancel button if you have one set.
-    public func removeButton(at buttonIndex: Int) {
-        if buttonIndex == self.buttons.count {
-            assert(self.cancelAction != nil, "Invalid button index; out of bounds.")
-            removeCancelButton()
-        } else {
-            self.buttons.remove(at: buttonIndex)
-        }
-    }
-
-    
     // MARK: Text Fields
 
     /// - seealso: Equivalent to `addTextFieldWithConfigurationHandler:` on `UIAlertController`.
     /// - note: The text fields for the `alertViewStyle` property will always come out on top of any fields added here.
-    public func addTextField(withConfigurationHandler configurationHandler: @escaping (_ textField: UITextField) -> Void) {
+    public func addTextField(with configurationHandler: @escaping (_ textField: UITextField) -> Void) {
         assert(style == .alert, "Text fields can only be added to alert controllers of style .alert")
         self.textFieldHandlers.append(configurationHandler)
     }
@@ -301,27 +221,14 @@ public class TBAlertController: NSObject {
                 break
         }
 
+        // Add text fields
         for handler in self.textFieldHandlers {
             alertController.addTextField(configurationHandler: handler)
         }
 
-        // "Other button" actions
-        var i = 0;
-        for button in buttons {
-            let style = self.styleForButton(at: i)
-            actions.append(self.action(from: button, with: style, controller: alertController))
-            i += 1
-        }
-
-        // Cancel action
-        if let cancelAction = self.cancelAction {
-            actions.append(
-                self.action(
-                    from: cancelAction,
-                    with: .cancel,
-                    controller: alertController
-                )
-            )
+        // Create actions
+        for button in self.buttons {
+            actions.append(self.action(from: button, with: button.style, controller: alertController))
         }
 
         // Add actions to alert controller
@@ -357,7 +264,7 @@ public class TBAlertController: NSObject {
             return
         }
 
-        let action = self.actions[index]
+        let action = self.buttons[index]
         self.dismiss()
         
         if action.enabled {
@@ -376,24 +283,12 @@ public class TBAlertController: NSObject {
         )
     }
 
-    // MARK: Button actions
-
-    public func button(at buttonIndex: Int) -> TBAlertAction {
-        // Cancel button
-        if buttonIndex == (self.buttons.count ) {
-            assert(cancelAction != nil, "Invalid button index; out of bounds.")
-            return cancelAction!
-        }
-
-        return buttons[buttonIndex]
-    }
-
     // MARK: UIAlertAction convenience (kinda wanna make this a category, can't because they call getTextFromTextFields)
 
     public func action(from button: TBAlertAction, with style: UIAlertAction.Style, controller: UIAlertController) -> UIAlertAction {
         let action: UIAlertAction
 
-        switch button.style {
+        switch button.kind {
             case .noAction:
                 action = UIAlertAction(title: button.title, style: style)
             case .block:
@@ -408,13 +303,5 @@ public class TBAlertController: NSObject {
 
         action.isEnabled = button.enabled
         return action
-    }
-}
-
-extension TBAlertController {
-    fileprivate func styleForButton(at index: Int) -> UIAlertAction.Style {
-        return (index == destructiveButtonIndex)
-            ? .destructive
-            : .default
     }
 }

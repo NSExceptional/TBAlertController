@@ -228,7 +228,7 @@ public class TBAlertController: NSObject {
 
         // Create actions
         for button in self.buttons {
-            actions.append(self.action(from: button, with: button.style, controller: alertController))
+            actions.append(self.action(from: button, controller: alertController))
         }
 
         // Add actions to alert controller
@@ -285,14 +285,14 @@ public class TBAlertController: NSObject {
 
     // MARK: UIAlertAction convenience (kinda wanna make this a category, can't because they call getTextFromTextFields)
 
-    public func action(from button: TBAlertAction, with style: UIAlertAction.Style, controller: UIAlertController) -> UIAlertAction {
+    public func action(from button: TBAlertAction, controller: UIAlertController) -> UIAlertAction {
         let action: UIAlertAction
 
         switch button.kind {
             case .noAction:
-                action = UIAlertAction(title: button.title, style: style)
+                action = UIAlertAction(title: button.title, style: button.style)
             case .block:
-                action = UIAlertAction(title: button.title, style: style,
+                action = UIAlertAction(title: button.title, style: button.style,
                     handler: { [weak self, weak controller] _ in
                         guard let self = self else { return }
                         self.collectText(from: controller?.textFields ?? [])

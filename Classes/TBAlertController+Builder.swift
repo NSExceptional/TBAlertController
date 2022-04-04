@@ -155,7 +155,7 @@ public class TBAlert: NSObject {
 public class TBAlertActionBuilder: NSObject {
     fileprivate var controller: TBAlertController
     fileprivate var title: String = ""
-    fileprivate var style: (UIAlertAction.Style) = .default
+    fileprivate var style: UIAlertAction.Style = .default
     fileprivate var disable: Bool = false
     fileprivate var handler: TBAlertActionBlock? = nil
     private var _action: TBAlertAction? = nil
@@ -176,6 +176,7 @@ public class TBAlertActionBuilder: NSObject {
     public lazy private(set) var action: TBAlertAction = {
         let a = TBAlertAction(
             title: self.title,
+            style: self.style,
             block: self.handler
         )
         a.enabled = !disable

@@ -39,10 +39,6 @@ public class TBAlertAction: NSObject {
     private(set) var kind: TBAlertActionKind = .noAction
     /// The block to be executed when the action is triggered, if it's style is `.block`.
     private(set) var block: TBAlertActionBlock?
-    /// Whether or not the action is enabled.
-    public var enabled: Bool = true
-    /// The style of the action.
-    public var style: UIAlertAction.Style = .default
     /// The title of the action, displayed on the button representing it.
     private(set) var title: String = ""
     /// The target of the `action` property.
@@ -53,6 +49,17 @@ public class TBAlertAction: NSObject {
     private(set) var action: Selector?
     /// The object used when the `style` property is `.targetObject`.
     private(set) var object: Any?
+    
+    internal var _action: UIAlertAction?
+    
+    /// The style of the action.
+    public let style: UIAlertAction.Style
+    /// Whether or not the action is enabled.
+    public var enabled: Bool = true {
+        didSet {
+            _action?.isEnabled = enabled
+        }
+    }
 
 
     // MARK: Initializers
@@ -60,9 +67,9 @@ public class TBAlertAction: NSObject {
 
     /// Initializes a `TBAlertAction` with the given title.
     public init(title: String, style: UIAlertAction.Style = .default) {
+        self.style = style
         super.init()
         self.title = title
-        self.style = style
     }
 
     /// Initializes a `TBAlertAction` with the given title and a block to execute when triggered.

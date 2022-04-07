@@ -308,6 +308,8 @@ public class TBAlertController: NSObject {
         }
 
         action.isEnabled = button.enabled
+        button._action = action
+        
         return action
     }
 }

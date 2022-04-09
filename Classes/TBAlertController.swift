@@ -20,6 +20,11 @@ public extension UIAlertController.Style {
 }
 
 @objcMembers
+private class TBUIAlertController: UIAlertController {
+    @objc fileprivate var presenter: TBAlertController? = nil
+}
+
+@objcMembers
 public class TBAlertController: NSObject {
     
     public enum PopoverSource {
@@ -44,7 +49,6 @@ public class TBAlertController: NSObject {
         }
     }
     
-    private var inCaseOfManualDismissal: UIAlertController?
     private var textFieldHandlers: [(UITextField) -> Void] = []
     private weak var currentPresentation: UIAlertController?
     private var completion: (() -> Void)?
@@ -186,14 +190,12 @@ public class TBAlertController: NSObject {
     ///                 You may pass `nil` to this parameter.
     public func show(from viewController: UIViewController, animated: Bool = true, completion: (() -> Void)? = nil) {
         var actions: [UIAlertAction] = []
-        let alertController = UIAlertController(
-            title: title,
-            message: message,
+        let alertController: TBUIAlertController = .init(
+            title: self.title,
+            message: self.message,
             preferredStyle: .init(style: self.style)
         )
         
-        self.inCaseOfManualDismissal = alertController
-
         // Add text fields
         switch alertViewStyle {
             case .loginAndPasswordInput:
@@ -253,6 +255,7 @@ public class TBAlertController: NSObject {
                 break
         }
 
+        alertController.presenter = self
         self.currentPresentation = alertController
         viewController.present(alertController, animated: animated, completion: completion)
     }
@@ -281,9 +284,10 @@ public class TBAlertController: NSObject {
     /// - seealso: Equivalent to calling `dismissAnimated:completion` on `UIAlertController`.
     public func dismiss(animated: Bool = true, completion: (() -> Void)? = nil) {
         self.currentPresentation = nil
-        self.collectText(from: self.inCaseOfManualDismissal?.textFields)
+        self.collectText(from: self.currentPresentation?.textFields)
         
-        inCaseOfManualDismissal?.dismiss(
+        defer { self.currentPresentation = nil }
+        self.currentPresentation?.dismiss(
             animated: animated,
             completion: completion
         )

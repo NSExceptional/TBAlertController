@@ -2,20 +2,17 @@
 
 Pod::Spec.new do |s|
   s.name             = "TBAlertController"
-  s.version          = "4.0.0"
-  s.summary          = "UIAlertController + UIAlertView + UIActionSheet = TBAlertController"
-  s.description      = <<-DESC
-                       UIAlertController, UIAlertView, and UIActionSheet unified for developers who want to support iOS 7, 8, and 9. No more conditional code when using any of these classes!
-                       DESC
+  s.version          = "1.0.0"
+  s.summary          = "Build UIAlertControllers with ease"
   s.homepage         = "https://github.com/NSExceptional/TBAlertController"
   s.license          = 'MIT'
   s.author           = { "Tanner Bennett" => "tannerbennett@me.com" }
   s.source           = { :git => "https://github.com/NSExceptional/TBAlertController.git", :tag => s.version.to_s }
   s.social_media_url = 'https://twitter.com/NSExceptional'
 
-  s.platform     = :ios, '7.0'
-  s.requires_arc = true
-
+  s.platform      = :ios, '12.0'
+  s.swift_version = '5.3'
+  
   s.source_files = 'Classes'
   s.public_header_files = 'Classes/*.h'
   s.frameworks = 'UIKit'

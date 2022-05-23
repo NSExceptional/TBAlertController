@@ -21,7 +21,7 @@ public extension UIAlertController.Style {
 
 @objcMembers
 private class TBUIAlertController: UIAlertController {
-    @objc fileprivate var presenter: TBAlertController? = nil
+    @objc fileprivate weak var presenter: TBAlertController? = nil
 }
 
 @objcMembers
@@ -50,7 +50,7 @@ public class TBAlertController: NSObject {
     }
     
     private var textFieldHandlers: [(UITextField) -> Void] = []
-    private weak var currentPresentation: UIAlertController?
+    private var currentPresentation: UIAlertController?
     private var completion: (() -> Void)?
     
     /// An array of `NSStrings` containing the text in each of the alert controller's text views *after* it has been dismissed.
@@ -255,6 +255,7 @@ public class TBAlertController: NSObject {
                 break
         }
 
+        // For introspection
         alertController.presenter = self
         self.currentPresentation = alertController
         viewController.present(alertController, animated: animated, completion: completion)
@@ -283,14 +284,12 @@ public class TBAlertController: NSObject {
 
     /// - seealso: Equivalent to calling `dismissAnimated:completion` on `UIAlertController`.
     public func dismiss(animated: Bool = true, completion: (() -> Void)? = nil) {
-        self.currentPresentation = nil
         self.collectText(from: self.currentPresentation?.textFields)
         
-        defer { self.currentPresentation = nil }
-        self.currentPresentation?.dismiss(
-            animated: animated,
-            completion: completion
-        )
+        self.currentPresentation?.dismiss(animated: animated) {
+            completion?()
+            self.currentPresentation = nil
+        }
     }
 
     // MARK: UIAlertAction convenience (kinda wanna make this a category, can't because they call getTextFromTextFields)
